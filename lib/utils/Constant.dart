@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import 'Colors.dart';
 
@@ -29,4 +30,4 @@ const PASSWORD = 'PASSWORD';
 const USER_EMAIL = 'USER_EMAIL';
 
 ///COLLECTION
-const ADMIN_COLLECTION = 'ADMIN_COLLECTION';
+const ADMIN_COLLECTION = 'admin';

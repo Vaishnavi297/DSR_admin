@@ -1,6 +1,6 @@
 import 'package:dsr_admin/screens/sign_in_screen.dart';
-import 'package:dsr_admin/utils/widgetExtention.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
 import '../utils/Constant.dart';
@@ -15,6 +15,8 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+
+    init();
   }
 
   init() async {

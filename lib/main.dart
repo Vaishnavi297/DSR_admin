@@ -1,22 +1,36 @@
 import 'package:dsr_admin/screens/splash_screen.dart';
 import 'package:dsr_admin/services/UserServices.dart';
 import 'package:dsr_admin/store/AppStore.dart';
-import 'package:dsr_admin/utils/Common.dart';
+import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Constant.dart';
 import 'package:dsr_admin/utils/Theme.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 AppStore appStore = AppStore();
 UserService userService = UserService();
 CustomTheme appTheme = CustomTheme();
-PageRouteAnimation? pageRouteAnimationGlobal;
 Duration pageRouteTransitionDurationGlobal = Duration(milliseconds: 400);
 late SharedPreferences sharedPreferences;
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  Firebase.initializeApp();
+
+  appButtonBackgroundColorGlobal = primaryColor;
+  defaultAppButtonTextColorGlobal = Colors.white;
+  defaultRadius = 12;
+  defaultBlurRadius = 0;
+  defaultSpreadRadius = 0;
+  defaultAppButtonElevation = 0;
+  pageRouteTransitionDurationGlobal = 400.milliseconds;
+
+  await initialize();
+
   runApp(MyApp());
 }
 
@@ -34,7 +48,9 @@ class MyApp extends StatelessWidget {
         brightness: Brightness.light,
         splashColor: Colors.transparent,
         highlightColor: Colors.transparent,
-        fontFamily: DefaultFont,
+        fontFamily: GoogleFonts.workSans().fontFamily,
+        useMaterial3: true,
+        textTheme: GoogleFonts.workSansTextTheme(),
       ),
       home: SplashScreen(),
     );

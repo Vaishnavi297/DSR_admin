@@ -22,6 +22,7 @@ class CustomButton extends StatelessWidget {
           onButtonClick();
         },
         height: height ?? 45,
+        minWidth: MediaQuery.of(context).size.width,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
         color: !isDisabled! ? (backgroundColor ?? appTheme.colorPrimary) : appTheme.colorPrimary.withOpacity(0.5),
         child: Text(buttonText, style: buttonTextStyle ?? appTheme.primaryTextStyle()),

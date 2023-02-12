@@ -101,7 +101,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   Widget build(BuildContext context) {
     var textStyle = !(widget.enable ?? false) ? appTheme.boldTextStyle(size: 14) : appTheme.boldTextStyle(size: 14);
     return Container(
-      margin: widget.margin ?? EdgeInsets.symmetric(vertical: 8, horizontal: 6),
+      // margin: widget.margin ?? EdgeInsets.symmetric(vertical: 8, horizontal: 6),
       constraints: BoxConstraints(maxHeight: 80, minHeight: 50),
       child: TextFormField(
         readOnly: widget.readOnly,

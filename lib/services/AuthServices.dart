@@ -1,17 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
 import '../model/UserModel.dart';
-import '../utils/Common.dart';
 import '../utils/Constant.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
   Future<void> signUpWithEmailPassword(context, {required String email, required String password, UserModel? performerData}) async {
+    log("Strep1---");
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    if (userCredential != null && userCredential.user != null) {
+    log("Strep12--"+userCredential.toString());
+
+    if (userCredential.user != null) {
       User currentUser = userCredential.user!;
 
       UserModel userModel = UserModel();
@@ -47,8 +50,6 @@ class AuthService {
       setValue(UID, userModel.id);
       setValue(USER_EMAIL, userModel.email);
       setValue(IS_LOGGED_IN, true);
-    }).catchError((error) async {
-
-    });
+    }).catchError((error) async {});
   }
 }

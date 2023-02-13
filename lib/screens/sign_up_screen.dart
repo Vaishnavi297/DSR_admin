@@ -1,9 +1,13 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:dsr_admin/main.dart';
+import 'package:dsr_admin/model/UserModel.dart';
 import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
+import 'package:dsr_admin/utils/Constant.dart';
 import 'package:dsr_admin/utils/Images.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -12,33 +16,51 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  AuthService authService = AuthService();
-
   GlobalKey<FormState> formKey = GlobalKey();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passController = TextEditingController();
+  Country selectedCountry = defaultCountry();
 
-  FocusNode passFocus = FocusNode();
+  TextEditingController firstNameCont = TextEditingController();
+  TextEditingController lastNameCont = TextEditingController();
+  TextEditingController emailCont = TextEditingController();
+  TextEditingController mobileNumberCont = TextEditingController();
+  TextEditingController passwordCont = TextEditingController();
+
+  FocusNode firstNameFocus = FocusNode();
+  FocusNode lastNameFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
+  FocusNode mobileNumberFocus = FocusNode();
+  FocusNode passwordFocus = FocusNode();
 
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() async {
+    //
+  }
+
+  //region New Logic
+  String buildMobileNumber() {
+    return '${selectedCountry.phoneCode}-${mobileNumberCont.text.trim()}';
+  }
+
+  ///endregion
+
+  ///region SignUp Tapped
   onSubmit() {
     appStore.setLoading(true);
 
     if (formKey.currentState!.validate()) {
       hideKeyboard(context);
+      UserModel userData = UserModel()
+        ..fullName = "${firstNameCont.text.validate()} ${lastNameCont.text.validate()}"
+        ..mobileNumber = buildMobileNumber()
+        ..email = emailCont.text.validate()
+        ..password = passwordCont.text.validate();
 
-      authService.signUpWithEmailPassword(context, email: emailController.text.trim(), password: passController.text.trim()).then((value) async {
-        toast('Register Successfully', print: true);
-
-        // final SnackBar snackBar = SnackBar(
-        //   content: Text(value),
-        //   action: SnackBarAction(
-        //     label: 'Undo',
-        //     onPressed: () {},
-        //   ),
-        // );
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // DocumentSubmitScreen().launch(context, isNewTask: true);
+      authService.signUpWithEmailPassword(context, email: emailCont.text.trim(), password: passwordCont.text.trim(), userData: userData).then((value) async {
         appStore.setLoading(false);
       }).catchError((e) {
         appStore.setLoading(false);
@@ -46,6 +68,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     }
   }
 
+  ///endregion
+
+  ///region UI Widget
   Widget getWelcomeTitle() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,20 +91,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
       child: Column(
         children: [
           AppTextField(
-            controller: emailController,
-            decoration: inputDecoration(context, labelText: 'Enter your email'),
-            nextFocus: passFocus,
-            textFieldType: TextFieldType.EMAIL,
+            textFieldType: TextFieldType.NAME,
+            controller: firstNameCont,
+            focus: firstNameFocus,
+            nextFocus: lastNameFocus,
+            errorThisFieldRequired: 'This field is required',
+            decoration: inputDecoration(context, labelText: 'First Name', hintText: 'Enter your first name'),
+          ),
+          16.height,
+          AppTextField(
+            textFieldType: TextFieldType.NAME,
+            controller: lastNameCont,
+            focus: lastNameFocus,
+            nextFocus: emailFocus,
+            errorThisFieldRequired: 'This field is required',
+            decoration: inputDecoration(context, labelText: 'Last Name', hintText: 'Enter your last name'),
           ),
           24.height,
           AppTextField(
-            controller: passController,
+            controller: emailCont,
+            decoration: inputDecoration(context, hintText: 'Enter your email', labelText: 'Email Address'),
+            nextFocus: mobileNumberFocus,
+            textFieldType: TextFieldType.EMAIL,
+            errorThisFieldRequired: 'This field is required',
+            autoFillHints: [AutofillHints.email],
+          ),
+          24.height,
+          AppTextField(
+            textFieldType: isAndroid ? TextFieldType.PHONE : TextFieldType.NAME,
+            controller: mobileNumberCont,
+            focus: mobileNumberFocus,
+            buildCounter: (_, {required int currentLength, required bool isFocused, required int? maxLength}) {
+              return TextButton(
+                child: Text('Change Country', style: primaryTextStyle(size: 14)),
+                onPressed: () {
+                  changeCountry();
+                },
+              );
+            },
+            errorThisFieldRequired: 'This field is required',
+            nextFocus: passwordFocus,
+            decoration: inputDecoration(context, labelText: 'Phone Number', hintText: 'Enter your phone number').copyWith(
+              prefixText: '+${selectedCountry.phoneCode} ',
+              hintText: 'Example: ${selectedCountry.example}',
+            ),
+          ),
+          8.height,
+          AppTextField(
+            controller: passwordCont,
             textFieldType: TextFieldType.PASSWORD,
             textInputAction: TextInputAction.done,
             keyboardType: TextInputType.number,
-            focus: passFocus,
-            maxLength: 10,
+            focus: passwordFocus,
             isValidationRequired: true,
+            errorThisFieldRequired: 'This field is required',
             decoration: inputDecoration(context, labelText: 'Enter your password'),
             onFieldSubmitted: (s) {
               onSubmit();
@@ -90,29 +155,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
+  ///endregion
+
+  ///region Change Country
+  Future<void> changeCountry() async {
+    showCountryPicker(
+      context: context,
+      showPhoneCode: true, // optional. Shows phone code before the country name.
+      onSelect: (Country country) {
+        selectedCountry = country;
+        setState(() {});
+      },
+    );
+  }
+
+  ///endregion
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
           children: [
-            getWelcomeTitle(),
-            formWidget(),
-            24.height,
-            AppButton(
-              onTap: () async {
-                toast('Register');
-                onSubmit();
-              },
-              height: 50,
-              width: context.width(),
-              text: "Submit",
-              color: primaryColor,
-              textStyle: boldTextStyle(color: white),
+            SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  getWelcomeTitle(),
+                  formWidget(),
+                  24.height,
+                  AppButton(
+                    onTap: () async {
+                      onSubmit();
+                    },
+                    height: 50,
+                    width: context.width(),
+                    text: "Submit",
+                    color: primaryColor,
+                    textStyle: boldTextStyle(color: white),
+                  ),
+                ],
+              ),
             ),
+            Observer(builder: (context) => Loader().visible(appStore.isLoading)),
           ],
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -31,3 +32,19 @@ const USER_EMAIL = 'USER_EMAIL';
 
 ///COLLECTION
 const ADMIN_COLLECTION = 'admin';
+
+Country defaultCountry() {
+  return Country(
+    phoneCode: '91',
+    countryCode: 'IN',
+    e164Sc: 91,
+    geographic: true,
+    level: 1,
+    name: 'India',
+    example: '9123456789',
+    displayName: 'India (IN) [+91]',
+    displayNameNoCountryCode: 'India (IN)',
+    e164Key: '91-IN-0',
+    fullExampleWithPlusSign: '+919123456789',
+  );
+}

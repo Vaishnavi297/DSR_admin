@@ -1,4 +1,5 @@
 import 'package:dsr_admin/screens/splash_screen.dart';
+import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/services/UserServices.dart';
 import 'package:dsr_admin/store/AppStore.dart';
 import 'package:dsr_admin/utils/Colors.dart';
@@ -12,9 +13,10 @@ import 'package:nb_utils/nb_utils.dart';
 AppStore appStore = AppStore();
 UserService userService = UserService();
 CustomTheme appTheme = CustomTheme();
-Duration pageRouteTransitionDurationGlobal = Duration(milliseconds: 400);
-late SharedPreferences sharedPreferences;
+AuthService authService = AuthService();
 
+
+Duration pageRouteTransitionDurationGlobal = Duration(milliseconds: 400);
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {

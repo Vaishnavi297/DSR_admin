@@ -2,6 +2,7 @@ import 'package:dsr_admin/screens/sign_up_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../main.dart';
 import '../services/AuthServices.dart';
@@ -22,6 +23,17 @@ class _SignInScreenState extends State<SignInScreen> {
   FocusNode passFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
 
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() async {
+    //
+  }
+
+  ///region UI Widget
   Widget welcomeTitleWidget() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,31 +49,38 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Widget formWidget() {
-    return Column(
-      children: [
-        AppTextField(
-          controller: emailController,
-          decoration: inputDecoration(context, labelText: 'Enter your email'),
-          nextFocus: passFocus,
-          textFieldType: TextFieldType.EMAIL,
-        ),
-        24.height,
-        AppTextField(
-          controller: passController,
-          textFieldType: TextFieldType.PASSWORD,
-          textInputAction: TextInputAction.done,
-          keyboardType: TextInputType.number,
-          focus: passFocus,
-          maxLength: 10,
-          isValidationRequired: true,
-          decoration: inputDecoration(context, labelText: 'Enter your password'),
-          onFieldSubmitted: (s) {
-            onSubmit();
-          },
-        ),
-      ],
+    return Form(
+      key: formKey,
+      child: Column(
+        children: [
+          AppTextField(
+            controller: emailController,
+            decoration: inputDecoration(context, hintText: 'Enter your email', labelText: 'Email Address'),
+            nextFocus: passFocus,
+            textFieldType: TextFieldType.EMAIL,
+            errorThisFieldRequired: 'This field is required',
+            autoFillHints: [AutofillHints.email],
+          ),
+          24.height,
+          AppTextField(
+            controller: passController,
+            textFieldType: TextFieldType.PASSWORD,
+            textInputAction: TextInputAction.done,
+            focus: passFocus,
+            isValidationRequired: true,
+            errorThisFieldRequired: 'This field is required',
+            autoFillHints: [AutofillHints.password],
+            decoration: inputDecoration(context, hintText: 'Enter your password', labelText: 'Password'),
+            onFieldSubmitted: (s) {
+              onSubmit();
+            },
+          ),
+        ],
+      ),
     );
   }
+
+  /// endregion
 
   /// region Login Tapped
   onSubmit() {
@@ -71,70 +90,66 @@ class _SignInScreenState extends State<SignInScreen> {
 
       authService.signInWithEmailPassword(context, email: emailController.text.trim(), password: passController.text.trim()).then((value) async {
         toast('Login Successfully', print: true);
-        // final SnackBar snackBar = SnackBar(
-        //   content: Text(value),
-        //   action: SnackBarAction(
-        //     label: 'Undo',
-        //     onPressed: () {},
-        //   ),
-        // );
-        // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        // DocumentSubmitScreen().launch(context, isNewTask: true);
         appStore.setLoading(false);
       }).catchError((e) {
         appStore.setLoading(false);
       });
     }
   }
+
   /// endregion
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Form(
-          key: formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              welcomeTitleWidget(),
-              formWidget(),
-              24.height,
-              AppButton(
-                onTap: () async {
-                  onSubmit();
-                },
-                height: 50,
-                width: context.width(),
-                text: "Sign In",
-                color: primaryColor,
-                textStyle: boldTextStyle(color: white),
-              ),
-              16.height,
-              Row(
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(
+          children: [
+            SingleChildScrollView(
+              padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text("Don't Have an account?", style: secondaryTextStyle()),
-                  TextButton(
-                    onPressed: () {
-                      hideKeyboard(context);
-                      SignUpScreen().launch(context);
+                  welcomeTitleWidget(),
+                  formWidget(),
+                  24.height,
+                  AppButton(
+                    onTap: () async {
+                      onSubmit();
                     },
-                    child: Text(
-                      'Sign Up',
-                      style: boldTextStyle(
-                        color: primaryColor,
-                        decoration: TextDecoration.underline,
-                        fontStyle: FontStyle.italic,
+                    height: 50,
+                    width: context.width() - context.navigationBarHeight,
+                    text: "Sign In",
+                    color: primaryColor,
+                    textStyle: boldTextStyle(color: white),
+                  ),
+                  16.height,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("Don't Have an account?", style: secondaryTextStyle()),
+                      TextButton(
+                        onPressed: () {
+                          hideKeyboard(context);
+                          SignUpScreen().launch(context);
+                        },
+                        child: Text(
+                          'Sign Up',
+                          style: boldTextStyle(
+                            color: primaryColor,
+                            decoration: TextDecoration.underline,
+                            fontStyle: FontStyle.italic,
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+            Observer(builder: (context) => Loader().visible(appStore.isLoading)),
+          ],
         ),
       ),
     );

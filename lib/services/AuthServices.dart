@@ -9,10 +9,9 @@ import '../utils/Constant.dart';
 final FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
-  Future<void> signUpWithEmailPassword(context, {required String email, required String password, UserModel? performerData}) async {
-    log("Strep1---");
+  Future<void> signUpWithEmailPassword(context, {required String email, required String password,String? phoneNumber, UserModel? userData}) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
-    log("Strep12--"+userCredential.toString());
+    log('=====User Data ${userCredential.user}=======');
 
     if (userCredential.user != null) {
       User currentUser = userCredential.user!;
@@ -22,18 +21,20 @@ class AuthService {
       /// Create user
       userModel.id = currentUser.uid;
       userModel.email = currentUser.email;
-      userModel.mobileNumber = performerData!.mobileNumber;
-      userModel.fullName = performerData.fullName;
-      userModel.gender = performerData.gender;
-      userModel.age = performerData.age;
+      userModel.password = userData!.password;
+      userModel.fullName = userData.fullName;
+      userModel.mobileNumber = userData.mobileNumber;
 
       userModel.createdAt = Timestamp.now().toDate().toString();
       userModel.updatedAt = Timestamp.now().toDate().toString();
 
+      log('=====User Data ${userModel.toJson()} =======');
+
       await userService.addDocumentWithCustomId(currentUser.uid, userModel.toJson()).then((value) async {
+        log("value----" + value.toString());
         appStore.setLoading(false);
         await signInWithEmailPassword(context, email: email, password: password).then((value) {
-          //
+          toast('Login SuccessFully');
         });
       });
     } else {
@@ -46,6 +47,7 @@ class AuthService {
     await _auth.signInWithEmailAndPassword(email: email, password: password).then((value) async {
       final User user = value.user!;
       UserModel userModel = await userService.getUser(email: user.email);
+
       //Login Details to SharedPreferences
       setValue(UID, userModel.id);
       setValue(USER_EMAIL, userModel.email);

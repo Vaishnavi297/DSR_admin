@@ -101,56 +101,54 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  welcomeTitleWidget(),
-                  formWidget(),
-                  24.height,
-                  AppButton(
-                    onTap: () async {
-                      onSubmit();
-                    },
-                    height: 50,
-                    width: context.width() - context.navigationBarHeight,
-                    text: "Sign In",
-                    color: primaryColor,
-                    textStyle: boldTextStyle(color: white),
-                  ),
-                  16.height,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Don't Have an account?", style: secondaryTextStyle()),
-                      TextButton(
-                        onPressed: () {
-                          hideKeyboard(context);
-                          SignUpScreen().launch(context);
-                        },
-                        child: Text(
-                          'Sign Up',
-                          style: boldTextStyle(
-                            color: primaryColor,
-                            decoration: TextDecoration.underline,
-                            fontStyle: FontStyle.italic,
-                          ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(16, context.statusBarHeight + 16, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                welcomeTitleWidget(),
+                formWidget(),
+                24.height,
+                AppButton(
+                  onTap: () async {
+                    onSubmit();
+                  },
+                  height: 50,
+                  width: context.width() - context.navigationBarHeight,
+                  text: "Sign In",
+                  color: primaryColor,
+                  textStyle: boldTextStyle(color: white),
+                ),
+                16.height,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text("Don't Have an account?", style: secondaryTextStyle()),
+                    TextButton(
+                      onPressed: () {
+                        hideKeyboard(context);
+                        SignUpScreen().launch(context);
+                      },
+                      child: Text(
+                        'Sign Up',
+                        style: boldTextStyle(
+                          color: primaryColor,
+                          decoration: TextDecoration.underline,
+                          fontStyle: FontStyle.italic,
                         ),
                       ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            Observer(builder: (context) => Loader().visible(appStore.isLoading)),
-          ],
-        ),
+          ),
+          Observer(builder: (context) => Loader().visible(appStore.isLoading)),
+        ],
       ),
     );
   }

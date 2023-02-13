@@ -173,35 +173,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Stack(
-          children: [
-            SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(16, 60, 16, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  getWelcomeTitle(),
-                  formWidget(),
-                  24.height,
-                  AppButton(
-                    onTap: () async {
-                      onSubmit();
-                    },
-                    height: 50,
-                    width: context.width(),
-                    text: "Submit",
-                    color: primaryColor,
-                    textStyle: boldTextStyle(color: white),
-                  ),
-                ],
-              ),
+    return Scaffold(
+      body: Stack(
+        children: [
+          SingleChildScrollView(
+            padding: EdgeInsets.fromLTRB(16, context.statusBarHeight + 16, 16, 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                getWelcomeTitle(),
+                formWidget(),
+                24.height,
+                AppButton(
+                  onTap: () async {
+                    onSubmit();
+                  },
+                  height: 50,
+                  width: context.width(),
+                  text: "Submit",
+                  color: primaryColor,
+                  textStyle: boldTextStyle(color: white),
+                ),
+              ],
             ),
-            Observer(builder: (context) => Loader().visible(appStore.isLoading)),
-          ],
-        ),
+          ),
+          Observer(builder: (context) => Loader().visible(appStore.isLoading)),
+        ],
       ),
     );
   }

@@ -75,6 +75,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        60.height,
         Image.asset(ic_app_logo, height: 150, width: 150),
         20.height,
         Text("Welcome to BSR", style: boldTextStyle(size: 24)),
@@ -141,7 +142,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
             controller: passwordCont,
             textFieldType: TextFieldType.PASSWORD,
             textInputAction: TextInputAction.done,
-            keyboardType: TextInputType.number,
             focus: passwordFocus,
             isValidationRequired: true,
             errorThisFieldRequired: 'This field is required',

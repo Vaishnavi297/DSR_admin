@@ -38,6 +38,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        60.height,
         Image.asset(ic_app_logo, height: 150, width: 150, fit: BoxFit.cover),
         20.height,
         Text("Welcome to BSR", style: boldTextStyle(size: 24)),

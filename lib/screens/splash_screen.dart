@@ -1,3 +1,4 @@
+import 'package:dsr_admin/screens/dashboard_screen.dart';
 import 'package:dsr_admin/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -20,7 +21,12 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   init() async {
-    await Future.delayed(Duration(seconds: 2)).then((value) => SignInScreen().launch(context));
+    await Future.delayed(Duration(seconds: 2)).then((value) {
+      if (appStore.isLoggedIn)
+        DashboardScreen().launch(context, isNewTask: true);
+      else
+        SignInScreen().launch(context, isNewTask: true);
+    });
   }
 
   @override

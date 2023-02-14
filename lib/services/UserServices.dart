@@ -45,7 +45,15 @@ class UserService extends BaseService {
       }
     });
   }
-
+  Future<UserModel> getUserExit({String? email}) {
+    return ref!.where("email", isEqualTo: email).get().then((value) {
+      if (value.docs.length == 1) {
+        return UserModel.fromJson(value.docs.first.data() as Map<String, dynamic>);
+      } else {
+        throw 'User is already exit';
+      }
+    });
+  }
   Stream<List<UserModel>> users({String? searchText}) {
     return ref!.snapshots().map((x) {
       return x.docs.map((y) {

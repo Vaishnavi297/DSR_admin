@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import 'dashboard_screen.dart';
+
 class SignUpScreen extends StatefulWidget {
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
@@ -61,6 +63,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         ..password = passwordCont.text.validate();
 
       authService.signUpWithEmailPassword(context, email: emailCont.text.trim(), password: passwordCont.text.trim(), userData: userData).then((value) async {
+        DashboardScreen().launch(context, isNewTask: true);
+
         appStore.setLoading(false);
       }).catchError((e) {
         appStore.setLoading(false);

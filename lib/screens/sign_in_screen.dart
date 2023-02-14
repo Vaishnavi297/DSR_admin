@@ -1,3 +1,4 @@
+import 'package:dsr_admin/screens/dashboard_screen.dart';
 import 'package:dsr_admin/screens/sign_up_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
@@ -91,6 +92,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
       authService.signInWithEmailPassword(context, email: emailController.text.trim(), password: passController.text.trim()).then((value) async {
         toast('Login Successfully', print: true);
+        DashboardScreen().launch(context, isNewTask: true);
         appStore.setLoading(false);
       }).catchError((e) {
         appStore.setLoading(false);

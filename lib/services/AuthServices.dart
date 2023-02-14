@@ -6,16 +6,17 @@ import '../main.dart';
 import '../model/UserModel.dart';
 import '../utils/Constant.dart';
 
-final FirebaseAuth _auth = FirebaseAuth.instance;
+FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
-  Future<void> signUpWithEmailPassword(context, {required String email, required String password,String? phoneNumber, UserModel? userData}) async {
-    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password);
+  Future<void> signUpWithEmailPassword(context, {required String email, required String password, String? phoneNumber, UserModel? userData}) async {
+    UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password).catchError((e) {
+      toast(e.toString(), print: true);
+    });
     log('=====User Data ${userCredential.user}=======');
 
     if (userCredential.user != null) {
       User currentUser = userCredential.user!;
-
       UserModel userModel = UserModel();
 
       /// Create user
@@ -24,7 +25,6 @@ class AuthService {
       userModel.password = userData!.password;
       userModel.fullName = userData.fullName;
       userModel.mobileNumber = userData.mobileNumber;
-
       userModel.createdAt = Timestamp.now().toDate().toString();
       userModel.updatedAt = Timestamp.now().toDate().toString();
 
@@ -42,16 +42,15 @@ class AuthService {
     }
   }
 
-  //
   Future<void> signInWithEmailPassword(context, {required String email, required String password}) async {
     await _auth.signInWithEmailAndPassword(email: email, password: password).then((value) async {
       final User user = value.user!;
       UserModel userModel = await userService.getUser(email: user.email);
 
       //Login Details to SharedPreferences
-      setValue(UID, userModel.id);
-      setValue(USER_EMAIL, userModel.email);
-      setValue(IS_LOGGED_IN, true);
+      appStore.setUID(userModel.id.validate());
+      appStore.setEmail(userModel.email.validate());
+      appStore.setLogin(true);
     }).catchError((error) async {});
   }
 }

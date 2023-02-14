@@ -1,6 +1,8 @@
 import 'package:dsr_admin/model/DiseaseModel.dart';
 import 'package:dsr_admin/utils/Colors.dart';
+import 'package:dsr_admin/utils/side_menu.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
@@ -83,14 +85,48 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           if (snap.hasData) {
             if (snap.data != null && snap.data!.isNotEmpty) {
               return ListView.separated(
-                  itemCount: snap.data!.length,
-                  padding: EdgeInsets.all(8),
-                  separatorBuilder: (c, i) {
-                    return Divider();
-                  },
-                  itemBuilder: (context, i) {
-                    DiseaseModel diseaseData = snap.data![i];
-                    return Row(
+                itemCount: snap.data!.length,
+                padding: EdgeInsets.zero,
+                separatorBuilder: (c, i) {
+                  return Divider(thickness: 1, height: 0, color: context.dividerColor);
+                },
+                itemBuilder: (context, i) {
+                  DiseaseModel diseaseData = snap.data![i];
+                  return Slidable(
+                    key: ValueKey(0),
+                    endActionPane: ActionPane(
+                      motion: ScrollMotion(),
+                      children: [
+                        SlidableAction(
+                          onPressed: (v) {
+                            diseaseCont.text = diseaseData.name.toString();
+                            addDiseaseWidget(isUpdate: true, id: diseaseData.id.validate());
+                          },
+                          backgroundColor: Colors.black12,
+                          foregroundColor: Colors.black,
+                          icon: Icons.edit,
+                          label: 'Edit',
+                        ),
+                        SlidableAction(
+                          onPressed: (v) {
+                            showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
+                              diseaseService.deleteDisease(id: diseaseData.id).then((value) {
+                                setState(() {});
+                                toast('Disease Added Successfully');
+                              });
+                              setState(() {});
+                            });
+                          },
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.redAccent,
+                          icon: Icons.delete,
+                          label: 'Delete',
+                        ),
+                      ],
+                    ),
+                    child: ListTile(title: Text(diseaseData.name.validate(), style: boldTextStyle())),
+                  );
+                  /*return Row(
                       children: [
                         Text(diseaseData.name.validate(), style: boldTextStyle()).paddingAll(8).expand(),
                         IconButton(
@@ -113,8 +149,9 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                           icon: Icon(Icons.delete),
                         )
                       ],
-                    );
-                  });
+                    );*/
+                },
+              );
             }
           }
           return snapWidgetHelper(snap, loadingWidget: Loader());

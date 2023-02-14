@@ -1,12 +1,10 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/UserModel.dart';
-import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
 import 'package:dsr_admin/utils/Constant.dart';
 import 'package:dsr_admin/utils/Images.dart';
-import 'package:dsr_admin/utils/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -87,28 +85,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
         8.height,
         Text('Sign in to continue with your credentials'),
         28.height,
-        SlideMenu(
-          menuItems: <Widget>[
-            Container(
-              color: Colors.black12,
-              child: IconButton(
-                icon: const Icon(Icons.more_horiz),
-                onPressed: () {},
-              ),
-            ),
-            Container(
-              color: Colors.red,
-              child: IconButton(
-                color: Colors.white,
-                icon: const Icon(Icons.delete),
-                onPressed: () {},
-              ),
-            ),
-          ],
-          child: const ListTile(
-            title: Text("Just drag me"),
-          ),
-        ),
       ],
     );
   }

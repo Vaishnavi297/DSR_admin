@@ -1,10 +1,8 @@
 import 'package:dsr_admin/model/DiseaseModel.dart';
 import 'package:dsr_admin/utils/Colors.dart';
-import 'package:dsr_admin/utils/side_menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../main.dart';
 import '../utils/Common.dart';
 
@@ -16,17 +14,7 @@ class DiseaseScreen extends StatefulWidget {
 class _DiseaseScreenState extends State<DiseaseScreen> {
   TextEditingController diseaseCont = TextEditingController();
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  init() {}
-
-  getDiseaseList() {
-    diseaseService.getAllDisease().then((value) {});
-  }
-
+  /// region add/update disease
   addDiseaseWidget({bool? isUpdate = false, String? id}) {
     return showConfirmDialogCustom(context,
         title: '',
@@ -51,18 +39,19 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
         diseaseService.addDisease(diseaseModel).then((value) {
           setState(() {});
 
-          toast('Disease Added Successfully');
+          toast('Added Successfully');
         });
       } else {
         diseaseService.updateDisease(id: id, data: diseaseModel).then((value) {
           setState(() {});
 
-          toast('Disease Updated Successfully');
+          toast('Updated Successfully');
         });
       }
       setState(() {});
     });
   }
+  ///endregion
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +101,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                             showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
                               diseaseService.deleteDisease(id: diseaseData.id).then((value) {
                                 setState(() {});
-                                toast('Disease Added Successfully');
+                                toast('Delete Successfully');
                               });
                               setState(() {});
                             });
@@ -126,30 +115,6 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                     ),
                     child: ListTile(title: Text(diseaseData.name.validate(), style: boldTextStyle())),
                   );
-                  /*return Row(
-                      children: [
-                        Text(diseaseData.name.validate(), style: boldTextStyle()).paddingAll(8).expand(),
-                        IconButton(
-                          onPressed: () {
-                            diseaseCont.text = diseaseData.name.toString();
-                            addDiseaseWidget(isUpdate: true, id: diseaseData.id.validate());
-                          },
-                          icon: Icon(Icons.edit),
-                        ),
-                        IconButton(
-                          onPressed: () {
-                            showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
-                              diseaseService.deleteDisease(id: diseaseData.id).then((value) {
-                                setState(() {});
-                                toast('Disease Added Successfully');
-                              });
-                              setState(() {});
-                            });
-                          },
-                          icon: Icon(Icons.delete),
-                        )
-                      ],
-                    );*/
                 },
               );
             }

@@ -4,7 +4,7 @@ class UserModel {
   String? email;
   String? gender;
   String? age;
-  String? mobileNumber;
+  int? mobileNumber;
   String? createdAt;
   String? updatedAt;
   String? password;

@@ -90,11 +90,12 @@ class _SignInScreenState extends State<SignInScreen> {
     if (formKey.currentState!.validate()) {
       hideKeyboard(context);
 
-      authService.signInWithEmailPassword(context, email: emailController.text.trim(), password: passController.text.trim()).then((value) async {
+      authService.signInWithEmail(emailController.text.trim(), passController.text.trim()).then((value) async {
         toast('Login Successfully', print: true);
         DashboardScreen().launch(context, isNewTask: true);
         appStore.setLoading(false);
       }).catchError((e) {
+        log(e.toString());
         appStore.setLoading(false);
       });
     }

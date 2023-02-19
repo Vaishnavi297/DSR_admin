@@ -21,6 +21,9 @@ abstract class _AppStore with Store {
   @observable
   String email = '';
 
+  @observable
+  String name = '';
+
   @action
   void setLoading(bool val) {
     isLoading = val;
@@ -38,6 +41,11 @@ abstract class _AppStore with Store {
     if (!isInitializing) await setValue(UID, val);
   }
 
+  @action
+  Future<void> setName(String val, {bool isInitializing = false}) async {
+    name = val;
+    if (!isInitializing) await setValue(NAME, val);
+  }
   @action
   Future<void> setEmail(String val, {bool isInitializing = false}) async {
     email = val;

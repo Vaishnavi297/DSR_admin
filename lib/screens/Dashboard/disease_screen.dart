@@ -3,8 +3,8 @@ import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:nb_utils/nb_utils.dart';
-import '../main.dart';
-import '../utils/Common.dart';
+import '../../main.dart';
+import '../../utils/Common.dart';
 
 class DiseaseScreen extends StatefulWidget {
   @override
@@ -58,7 +58,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
     return Scaffold(
       appBar: appBarWidget('Disease', color: primaryColor, textColor: Colors.white),
       floatingActionButton: Container(
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.all(4),
         decoration: boxDecorationWithRoundedCorners(borderRadius: radius(38), backgroundColor: primaryColor),
         child: IconButton(
           onPressed: () {

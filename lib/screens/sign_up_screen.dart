@@ -57,7 +57,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       hideKeyboard(context);
       UserModel userData = UserModel()
         ..fullName = "${firstNameCont.text.validate()} ${lastNameCont.text.validate()}"
-        ..mobileNumber = buildMobileNumber()
+        ..mobileNumber = buildMobileNumber().toInt()
         ..email = emailCont.text.validate()
         ..password = passwordCont.text.validate();
 

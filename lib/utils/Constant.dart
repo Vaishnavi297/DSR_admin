@@ -34,6 +34,8 @@ const USER_EMAIL = 'USER_EMAIL';
 ///COLLECTION
 const ADMIN_COLLECTION = 'admin';
 const DISEASES = 'diseases';
+const PRESCRIPTION = 'prescription';
+const PATIENTS = 'patients';
 
 
 Country defaultCountry() {

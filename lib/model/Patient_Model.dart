@@ -1,4 +1,4 @@
-class UserModel {
+class PatientModel {
   String? id;
   String? fullName;
   String? email;
@@ -9,7 +9,8 @@ class UserModel {
   String? updatedAt;
   String? password;
 
-  UserModel({
+
+  PatientModel({
     this.id,
     this.fullName,
     this.email,
@@ -21,7 +22,7 @@ class UserModel {
     this.password,
   });
 
-  UserModel.fromJson(Map<String, dynamic> json) {
+  PatientModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     fullName = json['fullName'];
     email = json['email'];

@@ -10,7 +10,7 @@ class DiseaseService extends BaseService {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   DiseaseService() {
-    ref = fireStore.collection(DISEASES);
+    ref = fireStore.collection(PRESCRIPTION);
   }
 
   Future<DocumentReference> addDisease(DiseaseModel data, {String? userId}) async {

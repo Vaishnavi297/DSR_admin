@@ -1,6 +1,6 @@
 import 'package:country_picker/country_picker.dart';
 import 'package:dsr_admin/main.dart';
-import 'package:dsr_admin/model/UserModel.dart';
+import 'package:dsr_admin/model/Patient_Model.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
 import 'package:dsr_admin/utils/Constant.dart';
@@ -55,7 +55,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (formKey.currentState!.validate()) {
       hideKeyboard(context);
-      UserModel userData = UserModel()
+      PatientModel userData = PatientModel()
         ..fullName = "${firstNameCont.text.validate()} ${lastNameCont.text.validate()}"
         ..mobileNumber = buildMobileNumber().toInt()
         ..email = emailCont.text.validate()

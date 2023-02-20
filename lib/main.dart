@@ -1,7 +1,8 @@
 import 'package:dsr_admin/screens/splash_screen.dart';
 import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/services/DiseaseService.dart';
-import 'package:dsr_admin/services/UserServices.dart';
+import 'package:dsr_admin/services/adminServices.dart';
+import 'package:dsr_admin/services/patientServices.dart';
 import 'package:dsr_admin/store/AppStore.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';
@@ -13,10 +14,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 AppStore appStore = AppStore();
-UserService userService = UserService();
+AdminService userService = AdminService();
 DiseaseService diseaseService = DiseaseService();
 CustomTheme appTheme = CustomTheme();
 AuthService authService = AuthService();
+PatientService patientService = PatientService();
 
 Duration pageRouteTransitionDurationGlobal = Duration(milliseconds: 400);
 late SharedPreferences sharedPreferences;

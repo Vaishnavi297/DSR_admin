@@ -1,4 +1,4 @@
-import 'package:dsr_admin/model/DiseaseModel.dart';
+import 'package:dsr_admin/model/Disease_Model.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';

@@ -18,7 +18,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   List<Widget> tabs = [
     HomeScreen(),
     DiseaseScreen(),
-    UserListScreen(),
+    PatientListScreen(),
     PrescriptionListScreen(),
   ];
 

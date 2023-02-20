@@ -3,13 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../main.dart';
-import '../model/UserModel.dart';
+import '../model/Patient_Model.dart';
 import '../utils/Constant.dart';
 
 FirebaseAuth _auth = FirebaseAuth.instance;
 
 class AuthService {
-  Future<void> signUpWithEmailPassword(context, {required String email, required String password, String? phoneNumber, UserModel? userData}) async {
+  Future<void> signUpWithEmailPassword(context, {required String email, required String password, String? phoneNumber, PatientModel? userData}) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password).catchError((e) {
       toast(e.toString(), print: true);
     });
@@ -17,7 +17,7 @@ class AuthService {
 
     if (userCredential.user != null) {
       User currentUser = userCredential.user!;
-      UserModel userModel = UserModel();
+      PatientModel userModel = PatientModel();
 
       /// Create user
       userModel.id = currentUser.uid;
@@ -42,11 +42,11 @@ class AuthService {
     }
   }
 
-  Future<UserModel> signInWithEmail(String email, String password) async {
+  Future<PatientModel> signInWithEmail(String email, String password) async {
     if (await userService.isUserExist(email)) {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
       if (userCredential.user != null) {
-        UserModel userModel = UserModel();
+        PatientModel userModel = PatientModel();
         User user = userCredential.user!;
 
         return await userService.userByEmail(user.email).then((value) async {

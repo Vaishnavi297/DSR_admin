@@ -61,7 +61,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             icon: Icon(Icons.coronavirus),
           ),
           BottomNavigationBarItem(
-            activeIcon: activeWidget('Users'),
+            activeIcon: activeWidget('Patients'),
             label: '',
             icon: Icon(Icons.person),
           ),

@@ -19,6 +19,14 @@ class PatientService extends BaseService {
     });
   }
 
+  Future<String> patientByUid({required String? id}) async {
+    String name = "";
+    await ref!.doc(id).get().then((value) {
+      PatientModel data = PatientModel.fromJson(value.data() as Map<String, dynamic>);
+      name = data.fullName.validate();
+    });
+    return name;
+  }
 
   Future<void> updatePatient({String? id, PatientModel? data}) async {
     ref!.doc(id).update(data!.toJson()).catchError((e) {

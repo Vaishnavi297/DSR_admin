@@ -11,58 +11,77 @@ class PatientListScreen extends StatefulWidget {
 }
 
 class _PatientListScreenState extends State<PatientListScreen> {
+  Future<List<PatientModel>>? future;
+
+  @override
+  void initState() {
+    super.initState();
+    init();
+  }
+
+  void init() {
+    future = patientService.getAllPatient();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: context.scaffoldBackgroundColor,
-      appBar: appBarWidget('Patient', showBack: false, color: primaryColor, textColor: white),
-      body: FutureBuilder<List<PatientModel>>(
-        future: patientService.getAllPatient(),
-        builder: (context, snap) {
-          if (snap.hasData) {
-            if (snap.data != null && snap.data!.isNotEmpty) {
-              return ListView.separated(
-                itemCount: snap.data!.length,
-                padding: EdgeInsets.zero,
-                separatorBuilder: (c, i) {
-                  return Divider(thickness: 1, height: 0, color: context.dividerColor);
-                },
-                itemBuilder: (context, i) {
-                  PatientModel patientData = snap.data![i];
+    return RefreshIndicator(
+      onRefresh: () async {
+        await 1.seconds.delay;
+        init();
+        setState(() {});
+      },
+      child: Scaffold(
+        backgroundColor: context.scaffoldBackgroundColor,
+        appBar: appBarWidget('Patient', showBack: false, color: primaryColor, textColor: white),
+        body: FutureBuilder<List<PatientModel>>(
+          future: future,
+          builder: (context, snap) {
+            if (snap.hasData) {
+              if (snap.data != null && snap.data!.isNotEmpty) {
+                return ListView.separated(
+                  itemCount: snap.data!.length,
+                  padding: EdgeInsets.zero,
+                  separatorBuilder: (c, i) {
+                    return Divider(thickness: 1, height: 0, color: context.dividerColor);
+                  },
+                  itemBuilder: (context, i) {
+                    PatientModel patientData = snap.data![i];
 
-                  return Container(
-                    decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(),backgroundColor: context.scaffoldBackgroundColor),
-                    padding: EdgeInsets.all(12),
-                    margin: EdgeInsets.all(8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        16.height,
-                        Text(patientData.fullName.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
-                        8.height,
-                        RichText(
-                          maxLines: 1,
-                          overflow: TextOverflow.clip,
-                          text: TextSpan(
-                            text: 'Age: ',
-                            style: secondaryTextStyle(),
-                            children: <TextSpan>[
-                              TextSpan(text: patientData.age.validate(), style: boldTextStyle()),
-                            ],
+                    return Container(
+                      decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
+                      padding: EdgeInsets.all(12),
+                      margin: EdgeInsets.all(8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          16.height,
+                          Text(patientData.fullName.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
+                          8.height,
+                          RichText(
+                            maxLines: 1,
+                            overflow: TextOverflow.clip,
+                            text: TextSpan(
+                              text: 'Age: ',
+                              style: secondaryTextStyle(),
+                              children: <TextSpan>[
+                                TextSpan(text: patientData.age.validate(), style: boldTextStyle()),
+                              ],
+                            ),
                           ),
-                        ),
-                        16.height,
-                      ],
-                    ),
-                  ).onTap(() {
-                    PatientDetailScreen(userData: patientData).launch(context);
-                  });
-                },
-              );
+                          16.height,
+                        ],
+                      ),
+                    ).onTap(() {
+                      PatientDetailScreen(userData: patientData).launch(context);
+                    });
+                  },
+                );
+              }
             }
-          }
-          return snapWidgetHelper(snap, loadingWidget: Loader());
-        },
+            return snapWidgetHelper(snap, loadingWidget: Loader());
+          },
+        ),
       ),
     );
   }

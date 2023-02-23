@@ -36,7 +36,7 @@ const ADMIN_COLLECTION = 'admin';
 const DISEASES = 'diseases';
 const PRESCRIPTION = 'prescription_list';
 const PATIENTS = 'patients';
-
+const MEDICINE = 'MEDICINE';
 
 Country defaultCountry() {
   return Country(

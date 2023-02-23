@@ -50,7 +50,6 @@ class AuthService {
         User user = userCredential.user!;
 
         return await userService.userByEmail(user.email).then((value) async {
-          log('Signed in');
           userModel = value;
           log(userModel.toJson().toString());
           await setValue(PASSWORD, password);

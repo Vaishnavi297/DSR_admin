@@ -1,6 +1,6 @@
 import 'package:dsr_admin/screens/Dashboard/home_screen.dart';
 import 'package:dsr_admin/screens/Dashboard/prescription_list_screen.dart';
-import 'package:dsr_admin/screens/Dashboard/user_list_screen.dart';
+import 'package:dsr_admin/screens/Dashboard/patient_list_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vector_icons/flutter_vector_icons.dart';
@@ -25,10 +25,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget activeWidget(String text) {
     return Container(
       padding: EdgeInsets.all(8),
-      decoration: boxDecorationWithRoundedCorners(backgroundColor: primaryColor.withOpacity(0.3), borderRadius: radius(defaultRadius)),
+      decoration: boxDecorationWithRoundedCorners(),
       child: Column(
         children: [
-          Text(text.validate(), style: primaryTextStyle(size: 14, color: Colors.white)),
+          Text(text.validate(), style: boldTextStyle(size: 14, color: primaryColor)),
           Icon(Entypo.dot_single),
         ],
       ),
@@ -45,9 +45,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
           setState(() {});
         },
         type: BottomNavigationBarType.fixed,
-        backgroundColor: primaryColor,
-        selectedItemColor: Colors.white,
-        unselectedItemColor: Colors.white,
+        backgroundColor: context.cardColor,
+        selectedItemColor: primaryColor,
+        unselectedItemColor: primaryColor,
         currentIndex: currentIndex,
         items: [
           BottomNavigationBarItem(

@@ -56,7 +56,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget('Disease', color: primaryColor, textColor: Colors.white),
+      appBar: appBarWidget('Disease', showBack: false,color: primaryColor,textColor: white),
       floatingActionButton: Container(
         padding: EdgeInsets.all(4),
         decoration: boxDecorationWithRoundedCorners(borderRadius: radius(38), backgroundColor: primaryColor),

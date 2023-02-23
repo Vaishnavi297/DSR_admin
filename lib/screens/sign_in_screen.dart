@@ -95,7 +95,7 @@ class _SignInScreenState extends State<SignInScreen> {
         DashboardScreen().launch(context, isNewTask: true);
         appStore.setLoading(false);
       }).catchError((e) {
-        log(e.toString());
+        toast(e.toString());
         appStore.setLoading(false);
       });
     }

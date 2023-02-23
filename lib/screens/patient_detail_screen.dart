@@ -1,4 +1,5 @@
 import 'package:dsr_admin/model/Patient_Model.dart';
+import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -30,11 +31,11 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget('${widget.userData!.fullName.validate()}'),
+      appBar: appBarWidget('${widget.userData!.fullName.validate()}', color: primaryColor, textColor: white),
       body: SingleChildScrollView(
         child: Column(
           children: [
-
+            //
           ],
         ),
       ),

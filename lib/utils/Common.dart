@@ -42,5 +42,6 @@ userLoginData() async {
   if(appStore.isLoading){
     await appStore.setUID(getStringAsync(UID), isInitializing: true);
     await appStore.setEmail(getStringAsync(USER_EMAIL), isInitializing: true);
+    await appStore.setName(getStringAsync(NAME), isInitializing: true);
   }
 }

@@ -1,6 +1,7 @@
 import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Patient_Model.dart';
 import 'package:dsr_admin/screens/patient_detail_screen.dart';
+import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
@@ -13,7 +14,8 @@ class _PatientListScreenState extends State<PatientListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget('Patient', showBack: false),
+      backgroundColor: context.scaffoldBackgroundColor,
+      appBar: appBarWidget('Patient', showBack: false, color: primaryColor, textColor: white),
       body: FutureBuilder<List<PatientModel>>(
         future: patientService.getAllPatient(),
         builder: (context, snap) {
@@ -29,14 +31,15 @@ class _PatientListScreenState extends State<PatientListScreen> {
                   PatientModel patientData = snap.data![i];
 
                   return Container(
-                    decoration: boxDecorationWithRoundedCorners(),
-                    padding: EdgeInsets.all(8),
+                    decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(),backgroundColor: context.scaffoldBackgroundColor),
+                    padding: EdgeInsets.all(12),
                     margin: EdgeInsets.all(8),
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         16.height,
-                        Text(patientData.fullName.validate(), style: boldTextStyle()),
-                        16.height,
+                        Text(patientData.fullName.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
+                        8.height,
                         RichText(
                           maxLines: 1,
                           overflow: TextOverflow.clip,

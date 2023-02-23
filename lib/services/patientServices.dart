@@ -11,7 +11,6 @@ class PatientService extends BaseService {
     ref = fireStore.collection(PATIENTS);
   }
 
-
   Future<List<PatientModel>> getAllPatient() async {
     return ref!.get().then((value) {
       return value.docs.map((y) {

@@ -2,13 +2,25 @@ import 'package:dsr_admin/model/Disease_Model.dart';
 
 class PrescriptionModel {
   DiseaseModel? diseaseData;
-  List<Prescription>? prescriptionList;
+  String? id;
+  String? status;
+  String? path;
+  String? url;
+  String? uid;
+  String? createdAt;
+  String? updatedAt;
 
-  PrescriptionModel(this.diseaseData, this.prescriptionList);
+  PrescriptionModel(this.diseaseData, this.id, this.status, this.path, this.url, this.uid, this.createdAt, this.updatedAt);
 
   PrescriptionModel.fromJson(Map<String, dynamic> json) {
     diseaseData = json['disease_data'] != null ? DiseaseModel.fromJson(json['disease_data']) : null;
-    prescriptionList = json['prescription_data_list'] != null ? (json['prescription_data_list'] as List).map((i) => Prescription.fromJson(i)).toList() : null;
+    id = json['id'];
+    status = json['status'];
+    path = json['path'];
+    url = json['url'];
+    uid = json['user_id'];
+    createdAt = json['create_date'];
+    updatedAt = json['update_date'];
   }
 
   Map<String, dynamic> toJson() {
@@ -17,11 +29,13 @@ class PrescriptionModel {
     if (this.diseaseData != null) {
       data['disease_data'] = this.diseaseData!.toJson();
     }
-
-    if (this.prescriptionList != null) {
-      data['prescription_data_list'] = this.prescriptionList!.map((v) => v.toJson()).toList();
-    }
-
+    data['id'] = this.id;
+    data['status'] = this.status;
+    data['path'] = this.path;
+    data['url'] = this.url;
+    data['uid'] = this.uid;
+    data['create_date'] = this.createdAt;
+    data['update_date'] = this.updatedAt;
     return data;
   }
 }

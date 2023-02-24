@@ -1,9 +1,12 @@
+import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
 import 'package:dsr_admin/screens/add_medicine_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/cache_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
+
+import '../model/Medicine_Model.dart';
 
 class PrescriptionDetailScreen extends StatefulWidget {
   final PrescriptionModel? data;
@@ -16,6 +19,7 @@ class PrescriptionDetailScreen extends StatefulWidget {
 
 class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   PrescriptionModel? prescriptionData;
+  Future<List<MedicineModel>>? future;
 
   @override
   void initState() {
@@ -24,6 +28,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   }
 
   void init() async {
+    future = medicineService.getAllMedicine(widget.data!.id.validate());
     getPrescriptionData();
   }
 
@@ -39,11 +44,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        '${widget.data!.diseaseData!.name.validate()}',
-        color: primaryColor,
-        textColor: white,
-      ),
+      appBar: appBarWidget('${widget.data!.diseaseData!.name.validate()}', color: primaryColor, textColor: white),
       body: SingleChildScrollView(
         padding: EdgeInsets.fromLTRB(16, 16, 16, 80),
         child: Column(
@@ -58,18 +59,48 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
             16.height,
             Text('Medicines', style: boldTextStyle(size: 20)),
             8.height,
-            AnimatedListView(
-              itemCount: 12,
-              shrinkWrap: true,
-              itemBuilder: (_, i) {
-                return Container(
-                  height: 50,
-                  width: context.width(),
-                  margin: EdgeInsets.symmetric(vertical: 8),
-                  decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt()),
-                );
+            FutureBuilder<List<MedicineModel>>(
+              future: future,
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  if (snap.data != null && snap.data!.isNotEmpty) {
+                    return AnimatedListView(
+                      itemCount: snap.data!.length,
+                      shrinkWrap: true,
+                      itemBuilder: (_, i) {
+                        return Container(
+                          padding: EdgeInsets.only(left: 16),
+                          width: context.width(),
+                          margin: EdgeInsets.symmetric(vertical: 8),
+                          decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt()),
+                          child: Row(
+                            children: [
+                              Text(snap.data![i].name.validate(), style: primaryTextStyle()),
+                              Spacer(),
+                              IconButton(
+                                onPressed: () async {
+                                  bool? res = await AddMedicineScreen(data: widget.data!, medicineModel: snap.data![i], isUpdate: true).launch(context);
+                                  if (res ?? false) {
+                                    init();
+                                    setState(() {});
+                                  }
+                                },
+                                icon: Icon(Icons.edit),
+                              ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: Icon(Icons.delete_sharp),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  }
+                }
+                return snapWidgetHelper(snap, loadingWidget: Loader());
               },
-            )
+            ),
           ],
         ),
       ),
@@ -79,12 +110,10 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
           bool? res = await AddMedicineScreen(data: widget.data!).launch(context);
           if (res ?? false) {
             init();
+            setState(() {});
           }
         },
-        label: Text(
-          'Add Medicine',
-          style: boldTextStyle(color: white),
-        ),
+        label: Text('Add Medicine', style: boldTextStyle(color: white)),
       ),
     );
   }

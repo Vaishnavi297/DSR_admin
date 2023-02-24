@@ -11,8 +11,10 @@ import 'package:nb_utils/nb_utils.dart';
 
 class AddMedicineScreen extends StatefulWidget {
   final PrescriptionModel? data;
+  final MedicineModel? medicineModel;
+  final bool? isUpdate;
 
-  AddMedicineScreen({required this.data});
+  AddMedicineScreen({required this.data, this.isUpdate = false, this.medicineModel});
 
   @override
   _AddMedicineScreenState createState() => _AddMedicineScreenState();
@@ -39,6 +41,27 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     timingList.add(MedicineTiming(name: EVENING, isSelected: false));
     timingList.add(MedicineTiming(name: NIGHT, isSelected: false));
 
+    if (widget.isUpdate.validate()) {
+      medicineNameCont.text = widget.medicineModel!.name.validate();
+      widget.medicineModel!.timing!.forEach((element) {
+        log(element);
+        selectedTiming.add(MedicineTiming(name: element, isSelected: true));
+        setState(() {});
+      });
+      log(selectedTiming.length.toString());
+      // timingList.forEach((e1) {
+      //   widget.medicineModel!.timing!.forEach((e2) {
+      //     log("value" + e2.toString());
+      //     log("value--" + e1.name.toString());
+      //
+      //     if (e1.name == e2.validate()) {
+      //       e1.isSelected = true;
+      //     }
+      //   });
+      // });
+
+      beforeEating = widget.medicineModel!.eatingStatus.validate();
+    }
     setState(() {});
   }
 
@@ -54,9 +77,14 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     data.name = medicineNameCont.text.validate();
     data.timing = selectedTime;
     data.eatingStatus = beforeEating;
-    data.createdAt = Timestamp.now().toString();
+    data.status = false;
+    data.createdAt = DateTime.now().toString();
+    data.updatedAt = DateTime.now().toString();
 
-    prescriptionService.getPrescription(widget.data!.id.validate(), data);
+    if (widget.isUpdate.validate())
+      medicineService.updateMedicine(widget.data!.id.validate(), data);
+    else
+      medicineService.getPrescription(widget.data!.id.validate(), data);
   }
 
   // endregion
@@ -69,11 +97,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget(
-        'Add Medicine',
-        color: primaryColor,
-        textColor: white,
-      ),
+      appBar: appBarWidget(widget.isUpdate.validate() ? "Update Medicine" : 'Add Medicine', color: primaryColor, textColor: white),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -98,6 +122,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                     padding: EdgeInsets.zero,
                     itemBuilder: (_, i) {
                       MedicineTiming data = timingList[i];
+
                       return CheckboxListTile(
                         contentPadding: EdgeInsets.only(right: 8),
                         value: selectedTiming.contains(data),
@@ -131,7 +156,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                 ),
                 16.height,
                 AppButton(
-                  child: Text('Add', style: boldTextStyle(color: white)),
+                  child: Text(widget.isUpdate.validate() ? 'Update' : 'Add', style: boldTextStyle(color: white)),
                   color: primaryColor,
                   width: context.width(),
                   onTap: () {

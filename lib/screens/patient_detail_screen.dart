@@ -61,7 +61,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           commonWidget('Name', widget.userData!.fullName.validate()),
-          commonWidget('Age', widget.userData!.age.validate()),
+          commonWidget('Age', widget.userData!.age),
           commonWidget('Gender', widget.userData!.gender.validate()),
           commonWidget('Height', widget.userData!.height.validate()),
           commonWidget('Weight', widget.userData!.weight.validate()),

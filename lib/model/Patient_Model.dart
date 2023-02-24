@@ -27,7 +27,7 @@ class PatientModel {
 
   PatientModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    fullName = json['fullName'];
+    fullName = json['full_name'];
     email = json['email'];
     gender = json['gender'];
     age = json['age'];
@@ -42,7 +42,7 @@ class PatientModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['fullName'] = this.fullName;
+    data['full_name'] = this.fullName;
     data['email'] = this.email;
     data['gender'] = this.gender;
     data['email'] = this.email;

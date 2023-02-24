@@ -24,10 +24,14 @@ class PrescriptionService extends BaseService {
   }
 
   Future<int> getAllPrescriptionLength() async {
-    int? length = 0;
-    return ref!.doc().get().then((value) {
-      log("message" + value.data().toString());
-      return length;
+    List<PrescriptionModel> prescriptionList = [];
+    return ref!.get().then((value) {
+      value.docs.map((y) {
+        prescriptionList.add(PrescriptionModel.fromJson(y.data() as Map<String, dynamic>));
+      }).toList();
+      log("message " + prescriptionList.length.toString());
+
+      return prescriptionList.length;
     });
   }
 
@@ -39,12 +43,8 @@ class PrescriptionService extends BaseService {
     });
   }
 
-  getPrescription(String? id, MedicineModel? data) async {
-    return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
-      appStore.setLoading(false);
-      toast('Add Medicine Successfully');
-    });
-  }
+
+
 
   Future<void> updateDisease({String? id, DiseaseModel? data}) async {
     ref!.doc(id).update(data!.toJson()).catchError((e) {

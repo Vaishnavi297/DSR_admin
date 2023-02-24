@@ -19,6 +19,18 @@ class PatientService extends BaseService {
     });
   }
 
+  Future<int> getAllPatientLength() async {
+    List<PatientModel> patientModel = [];
+    return ref!.get().then((value) {
+      value.docs.map((y) {
+        patientModel.add(PatientModel.fromJson(y.data() as Map<String, dynamic>));
+      }).toList();
+      log("message " + patientModel.length.toString());
+
+      return patientModel.length;
+    });
+  }
+
   Future<String> patientByUid({required String? id}) async {
     String name = "";
     await ref!.doc(id).get().then((value) {

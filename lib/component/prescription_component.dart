@@ -21,7 +21,6 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
     return Container(
       decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
       padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,

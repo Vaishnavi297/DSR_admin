@@ -1,6 +1,7 @@
 import 'package:dsr_admin/screens/splash_screen.dart';
 import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/services/DiseaseService.dart';
+import 'package:dsr_admin/services/MedicineService.dart';
 import 'package:dsr_admin/services/PrescriptionServices.dart';
 import 'package:dsr_admin/services/adminServices.dart';
 import 'package:dsr_admin/services/PatientServices.dart';
@@ -21,7 +22,7 @@ CustomTheme appTheme = CustomTheme();
 AuthService authService = AuthService();
 PatientService patientService = PatientService();
 PrescriptionService prescriptionService = PrescriptionService();
-
+MedicineService medicineService=MedicineService();
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {

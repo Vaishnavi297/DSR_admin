@@ -82,15 +82,15 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await 1.seconds.delay;
-        init();
-        setState(() {});
-      },
-      child: Scaffold(
-        appBar: appBarWidget('Disease', showBack: false, color: primaryColor, textColor: white),
-        body: FutureBuilder<List<DiseaseModel>>(
+    return Scaffold(
+      appBar: appBarWidget('Disease', showBack: false, color: primaryColor, textColor: white),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await 1.seconds.delay;
+          init();
+          setState(() {});
+        },
+        child: FutureBuilder<List<DiseaseModel>>(
           future: future,
           builder: (context, snap) {
             if (snap.hasData) {
@@ -144,16 +144,16 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
             return snapWidgetHelper(snap, loadingWidget: Loader());
           },
         ),
-        floatingActionButton: Container(
-          padding: EdgeInsets.all(4),
-          decoration: boxDecorationWithRoundedCorners(borderRadius: radius(38), backgroundColor: primaryColor),
-          child: IconButton(
-            onPressed: () {
-              diseaseCont.text = '';
-              addDiseaseWidget();
-            },
-            icon: Icon(Icons.add, size: 30, color: Colors.white),
-          ),
+      ),
+      floatingActionButton: Container(
+        padding: EdgeInsets.all(4),
+        decoration: boxDecorationWithRoundedCorners(borderRadius: radius(38), backgroundColor: primaryColor),
+        child: IconButton(
+          onPressed: () {
+            diseaseCont.text = '';
+            addDiseaseWidget();
+          },
+          icon: Icon(Icons.add, size: 30, color: Colors.white),
         ),
       ),
     );

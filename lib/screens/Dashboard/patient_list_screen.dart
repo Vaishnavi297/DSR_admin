@@ -65,7 +65,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
                               text: 'Age: ',
                               style: secondaryTextStyle(),
                               children: <TextSpan>[
-                                TextSpan(text: patientData.age.validate(), style: boldTextStyle()),
+                                TextSpan(text: patientData.age, style: boldTextStyle()),
                               ],
                             ),
                           ),

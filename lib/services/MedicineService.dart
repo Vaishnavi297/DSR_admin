@@ -5,17 +5,19 @@ import 'package:dsr_admin/services/BaseServices.dart';
 import 'package:dsr_admin/utils/Constant.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-class PatientService extends BaseService {
+import '../main.dart';
+
+class MedicineService extends BaseService {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
-  PatientService() {
-    ref = fireStore.collection(MEDICINE);
+  MedicineService() {
+    ref = fireStore.collection(PRESCRIPTION);
   }
 
-  Future<List<MedicineModel>> getAllMedicine() async {
-    return ref!.get().then((value) {
+  Future<List<MedicineModel>> getAllMedicine(String? id) async {
+    return ref!.doc(id).collection(MEDICINE).get().then((value) {
       return value.docs.map((y) {
-        return MedicineModel.fromJson(y.data() as Map<String, dynamic>);
+        return MedicineModel.fromJson(y.data());
       }).toList();
     });
   }
@@ -28,9 +30,19 @@ class PatientService extends BaseService {
     return data!;
   }
 
-  Future<void> updateMedicine({String? id, PatientModel? data}) async {
-    ref!.doc(id).update(data!.toJson()).catchError((e) {
-      log(e.toString());
+  getPrescription(String? id, MedicineModel? data) async {
+    return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
+      appStore.setLoading(false);
+      log("----" + value.id);
+      ref!.doc(id).collection(MEDICINE).doc(value.id).update({'id': value.id});
+      toast('Add Medicine Successfully');
+    });
+  }
+
+  Future<void> updateMedicine(String? id, MedicineModel? data) async {
+    return ref!.doc(id).collection(MEDICINE).doc(data!.id).update(data.toJson()).then((value) {
+      appStore.setLoading(false);
+      toast('Updated Successfully');
     });
   }
 

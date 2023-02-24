@@ -28,15 +28,15 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        await 1.seconds.delay;
-        init();
-        setState(() {});
-      },
-      child: Scaffold(
-        appBar: appBarWidget('Prescription', showBack: false, color: primaryColor, textColor: white),
-        body: FutureBuilder<List<PrescriptionModel>>(
+    return Scaffold(
+      appBar: appBarWidget('Prescription', showBack: false, color: primaryColor, textColor: white),
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await 1.seconds.delay;
+          init();
+          setState(() {});
+        },
+        child: FutureBuilder<List<PrescriptionModel>>(
           future: future,
           builder: (context, snap) {
             if (snap.hasData) {
@@ -47,7 +47,7 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> {
                   itemBuilder: (context, i) {
                     PrescriptionModel data = snap.data![i];
 
-                    return PrescriptionComponent(data);
+                    return PrescriptionComponent(data).paddingSymmetric(vertical: 8, horizontal: 16);
                   },
                 );
               }

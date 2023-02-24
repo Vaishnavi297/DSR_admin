@@ -1,5 +1,6 @@
 import 'package:dsr_admin/component/prescription_component.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../model/Prescription_Model.dart';
 
@@ -19,7 +20,7 @@ class _PrescriptionListComponentState extends State<PrescriptionListComponent> {
       physics: NeverScrollableScrollPhysics(),
         itemCount: widget.prescriptionList!.length,
         itemBuilder: (c, i) {
-          return PrescriptionComponent(widget.prescriptionList![i]);
+          return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
         });
   }
 }

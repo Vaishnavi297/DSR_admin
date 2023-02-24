@@ -4,12 +4,31 @@ import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../component/home_card_component.dart';
+import '../../component/prescription_component.dart';
+import '../../model/Prescription_Model.dart';
+
 class HomeScreen extends StatefulWidget {
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  int? patientCount = 0;
+  int? prescriptionCount = 0;
+
+  @override
+  void initState() {
+    prescriptionService.getAllPrescriptionLength().then((value) {
+      prescriptionCount = value;
+      setState(() {});
+    });
+    patientService.getAllPatientLength().then((value) {
+      patientCount = value;
+      setState(() {});
+    });
+    super.initState();
+  }
 
   logOut() {
     showConfirmDialogCustom(context, barrierDismissible: false, title: 'Are you sure want to log out?', onAccept: (e) {
@@ -24,8 +43,12 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void dispose() {
+    super.dispose();
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarWidget(
         '',
@@ -37,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             text: 'Hello, ',
             style: secondaryTextStyle(color: Colors.white),
             children: <TextSpan>[
-              TextSpan(text: appStore.name, style: boldTextStyle(color: Colors.white)),
+              TextSpan(text: appStore.name.capitalizeFirstLetter(), style: boldTextStyle(color: Colors.white)),
             ],
           ),
         ),
@@ -54,55 +77,44 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(16),
-        child: Row(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              height: 130,
-              alignment: Alignment.center,
-              width: (context.width() - 48) / 2,
-              decoration: boxDecorationWithRoundedCorners(borderRadius: radius(8), backgroundColor: context.cardColor, border: Border.all(width: 0.4)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: boxDecorationWithRoundedCorners(
-                      borderRadius: radius(defaultRadius),
-                      backgroundColor: primaryColor.withOpacity(0.3),
-                    ),
-                    child: Icon(Icons.person, color: primaryColor),
-                  ),
-                  8.height,
-                  Text('8', style: boldTextStyle()),
-                  8.height,
-                  Text('Patients', style: boldTextStyle())
-                ],
+            Row(
+              children: [
+                HomeCardComponent(count: patientCount.toString(), title: "Patients").onTap(() {
+
+                }, hoverColor: Colors.transparent, highlightColor: transparentColor, splashColor: Colors.transparent),
+                16.width,
+                HomeCardComponent(count: prescriptionCount.toString(), title: 'Prescriptions'),
+              ],
+            ),
+            30.height,
+            Text("Prescription List", style: boldTextStyle()),
+            Divider(endIndent: 250),
+            8.height,
+            SizedBox(
+              height: context.height(),
+              child: FutureBuilder<List<PrescriptionModel>>(
+                future: prescriptionService.getAllPrescription(),
+                builder: (context, snap) {
+                  if (snap.hasData) {
+                    if (snap.data != null && snap.data!.isNotEmpty) {
+                      return ListView.builder(
+                        itemCount: snap.data!.length >= 10 ? 10 : snap.data!.length,
+                        padding: EdgeInsets.zero,
+                        itemBuilder: (context, i) {
+                          PrescriptionModel data = snap.data![i];
+
+                          return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
+                        },
+                      );
+                    }
+                  }
+                  return snapWidgetHelper(snap, loadingWidget: Loader());
+                },
               ),
             ),
-            16.width,
-            Container(
-              height: 130,
-              alignment: Alignment.center,
-              width: (context.width() - 48) / 2,
-              decoration: boxDecorationWithRoundedCorners(borderRadius: radius(8), backgroundColor: context.cardColor, border: Border.all(width: 0.4)),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    padding: EdgeInsets.all(12),
-                    decoration: boxDecorationWithRoundedCorners(
-                      borderRadius: radius(defaultRadius),
-                      backgroundColor: primaryColor.withOpacity(0.3),
-                    ),
-                    child: Icon(Icons.person, color: primaryColor),
-                  ),
-                  8.height,
-                  Text('8', style: boldTextStyle()),
-                  8.height,
-                  Text('Patients', style: boldTextStyle())
-                ],
-              ),
-            )
           ],
         ),
       ),

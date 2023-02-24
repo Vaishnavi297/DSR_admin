@@ -3,7 +3,7 @@ import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/services/DiseaseService.dart';
 import 'package:dsr_admin/services/PrescriptionServices.dart';
 import 'package:dsr_admin/services/adminServices.dart';
-import 'package:dsr_admin/services/patientServices.dart';
+import 'package:dsr_admin/services/PatientServices.dart';
 import 'package:dsr_admin/store/AppStore.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/Common.dart';

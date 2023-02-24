@@ -2,8 +2,6 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
-import 'Colors.dart';
-
 const AppName = 'DSR Admin';
 
 const String DefaultFont = "Poppins";
@@ -24,6 +22,11 @@ String? fontFamilySecondaryGlobal;
 FontWeight fontWeightBoldGlobal = FontWeight.w600;
 FontWeight fontWeightPrimaryGlobal = FontWeight.normal;
 FontWeight fontWeightSecondaryGlobal = FontWeight.normal;
+
+const MORNING = 'Morning';
+const AFTER_NOON = 'After Noon';
+const EVENING = 'Evening';
+const NIGHT = 'Night';
 
 const IS_LOGGED_IN = 'IS_LOGGED_IN';
 const PATIENT_MODEL = 'PATIENT_MODEL';

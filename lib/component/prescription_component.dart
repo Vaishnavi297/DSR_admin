@@ -26,7 +26,7 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CachedImageWidget(url: widget.data!.url.validate(), height: 80, width: 80, radius: defaultRadius, fit: BoxFit.cover),
+          CachedImageWidget(url: widget.data!.url.validate(), height: 60, width: 60, radius: defaultRadius, fit: BoxFit.cover),
           12.width,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,

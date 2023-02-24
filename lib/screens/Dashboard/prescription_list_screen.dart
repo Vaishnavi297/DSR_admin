@@ -6,6 +6,8 @@ import 'package:dsr_admin/utils/cache_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../../component/prescription_component.dart';
+
 class PrescriptionListScreen extends StatefulWidget {
   @override
   _PrescriptionListScreenState createState() => _PrescriptionListScreenState();
@@ -45,37 +47,7 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> {
                   itemBuilder: (context, i) {
                     PrescriptionModel data = snap.data![i];
 
-                    return Container(
-                      decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
-                      padding: EdgeInsets.all(12),
-                      margin: EdgeInsets.all(8),
-                      child: Row(
-                        children: [
-                          CachedImageWidget(url: data.url.validate(), height: 40, width: 40, radius: defaultRadius, fit: BoxFit.cover),
-                          16.width,
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              FutureBuilder<String>(
-                                future: patientService.patientByUid(id: data.uid.validate()),
-                                builder: (context, snapData) {
-                                  if (snapData.hasData) {
-                                    if (snapData.data != null && snapData.data!.isNotEmpty) {
-                                      return Text(snapData.data.validate(), style: boldTextStyle());
-                                    }
-                                  }
-                                  return Offstage();
-                                },
-                              ),
-                              4.height,
-                              Text(data.diseaseData!.name.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ).onTap(() {
-                      PrescriptionDetailScreen(data: data).launch(context);
-                    }, hoverColor: Colors.transparent, splashColor: Colors.transparent, highlightColor: Colors.transparent);
+                    return PrescriptionComponent(data);
                   },
                 );
               }

@@ -1,6 +1,7 @@
 import 'package:mobx/mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../model/Patient_Model.dart';
 import '../utils/Common.dart';
 import '../utils/Constant.dart';
 
@@ -46,6 +47,7 @@ abstract class _AppStore with Store {
     name = val;
     if (!isInitializing) await setValue(NAME, val);
   }
+
   @action
   Future<void> setEmail(String val, {bool isInitializing = false}) async {
     email = val;

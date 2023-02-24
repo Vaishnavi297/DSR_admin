@@ -28,11 +28,28 @@ class PrescriptionService extends BaseService {
     });
   }
 
+  Future<int> getAllPrescriptionLength() async {
+    int? length = 0;
+    return ref!.doc().get().then((value) {
+      log("message"+value.data().toString());
+      return length;
+    });
+  }
+
+  Future<List<PrescriptionModel>> getPrescriptionByUser(String? id) async {
+    return ref!.where('user_id', isEqualTo: id).get().then((value) {
+      return value.docs.map((y) {
+        return PrescriptionModel.fromJson(y.data() as Map<String, dynamic>);
+      }).toList();
+    });
+  }
+
   Future<void> updateDisease({String? id, DiseaseModel? data}) async {
     ref!.doc(id).update(data!.toJson()).catchError((e) {
       log(e.toString());
     });
-  }
+
+
 
   Future<void> deleteDisease({String? id, String? url}) async {
     ref!.doc(id).delete().catchError((e) {

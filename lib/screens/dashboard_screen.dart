@@ -3,9 +3,8 @@ import 'package:dsr_admin/screens/Dashboard/prescription_list_screen.dart';
 import 'package:dsr_admin/screens/Dashboard/patient_list_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_vector_icons/flutter_vector_icons.dart';
 import 'package:nb_utils/nb_utils.dart';
-
+import '../main.dart';
 import 'Dashboard/disease_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -23,54 +22,33 @@ class _DashboardScreenState extends State<DashboardScreen> {
   ];
 
   Widget activeWidget(String text) {
-    return Container(
-      padding: EdgeInsets.all(8),
-      decoration: boxDecorationWithRoundedCorners(),
-      child: Column(
-        children: [
-          Text(text.validate(), style: boldTextStyle(size: 14, color: primaryColor)),
-          Icon(Entypo.dot_single),
-        ],
-      ),
-    );
+    return Text(text.validate(), style: boldTextStyle(size: 14, color: primaryColor));
   }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: tabs[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: (i) {
-          currentIndex = i;
-          setState(() {});
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: context.cardColor,
-        selectedItemColor: primaryColor,
-        unselectedItemColor: primaryColor,
-        currentIndex: currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            activeIcon: activeWidget('Home'),
-            label: '',
-            icon: Icon(Icons.home),
-          ),
-          BottomNavigationBarItem(
-            activeIcon: activeWidget('Disease'),
-            label: '',
-            icon: Icon(Icons.coronavirus),
-          ),
-          BottomNavigationBarItem(
-            activeIcon: activeWidget('Patients'),
-            label: '',
-            icon: Icon(Icons.person),
-          ),
-          BottomNavigationBarItem(
-            activeIcon: activeWidget('Prescription'),
-            label: '',
-            icon: Icon(Icons.article),
-          )
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 60,
+        child: BottomNavigationBar(
+          onTap: (i) {
+            currentIndex = i;
+            setState(() {});
+          },
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: context.cardColor,
+          selectedItemColor: primaryColor,
+          unselectedItemColor: primaryColor,
+          currentIndex: currentIndex,
+          items: [
+            BottomNavigationBarItem(activeIcon: activeWidget('Home'), label: '', icon: Icon(Icons.home)),
+            BottomNavigationBarItem(activeIcon: activeWidget('Disease'), label: '', icon: Icon(Icons.coronavirus)),
+            BottomNavigationBarItem(activeIcon: activeWidget('Patients'), label: '', icon: Icon(Icons.person)),
+            BottomNavigationBarItem(activeIcon: activeWidget('Prescription'), label: '', icon: Icon(Icons.article))
+          ],
+        ),
       ),
     );
   }

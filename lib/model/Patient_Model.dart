@@ -3,12 +3,13 @@ class PatientModel {
   String? fullName;
   String? email;
   String? gender;
-  String? age;
-  String? mobileNumber;
+  var age;
+  var mobileNumber;
   String? createdAt;
   String? updatedAt;
   String? password;
-
+  String? height;
+  String? weight;
 
   PatientModel({
     this.id,
@@ -20,11 +21,13 @@ class PatientModel {
     this.createdAt,
     this.updatedAt,
     this.password,
+    this.height,
+    this.weight,
   });
 
   PatientModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
-    fullName = json['full_name'];
+    fullName = json['fullName'];
     email = json['email'];
     gender = json['gender'];
     age = json['age'];
@@ -32,12 +35,14 @@ class PatientModel {
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
     password = json['password'];
+    height = json['height'];
+    weight = json['weight'];
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
-    data['full_name'] = this.fullName;
+    data['fullName'] = this.fullName;
     data['email'] = this.email;
     data['gender'] = this.gender;
     data['email'] = this.email;
@@ -46,6 +51,8 @@ class PatientModel {
     data['created_at'] = this.createdAt;
     data['updated_at'] = this.updatedAt;
     data['password'] = this.password;
+    data['height'] = this.height;
+    data['weight'] = this.weight;
     return data;
   }
 }

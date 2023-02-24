@@ -26,6 +26,7 @@ FontWeight fontWeightPrimaryGlobal = FontWeight.normal;
 FontWeight fontWeightSecondaryGlobal = FontWeight.normal;
 
 const IS_LOGGED_IN = 'IS_LOGGED_IN';
+const PATIENT_MODEL = 'PATIENT_MODEL';
 const UID = 'UID';
 const NAME = 'NAME';
 const PASSWORD = 'PASSWORD';

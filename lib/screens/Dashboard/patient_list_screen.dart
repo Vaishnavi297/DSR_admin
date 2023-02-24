@@ -50,12 +50,12 @@ class _PatientListScreenState extends State<PatientListScreen> {
 
                     return Container(
                       decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
-                      padding: EdgeInsets.all(12),
+                      padding: EdgeInsets.all(8),
                       margin: EdgeInsets.all(8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          16.height,
+                          8.height,
                           Text(patientData.fullName.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
                           8.height,
                           RichText(
@@ -69,7 +69,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
                               ],
                             ),
                           ),
-                          16.height,
+                          8.height,
                         ],
                       ),
                     ).onTap(() {

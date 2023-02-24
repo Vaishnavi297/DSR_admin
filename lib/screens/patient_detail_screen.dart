@@ -3,6 +3,10 @@ import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
+import '../component/prescription_list_component.dart';
+import '../main.dart';
+import '../model/Prescription_Model.dart';
+
 class PatientDetailScreen extends StatefulWidget {
   final PatientModel? userData;
 
@@ -12,7 +16,9 @@ class PatientDetailScreen extends StatefulWidget {
   _PatientDetailScreenState createState() => _PatientDetailScreenState();
 }
 
-class _PatientDetailScreenState extends State<PatientDetailScreen> {
+class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTickerProviderStateMixin {
+  TabController? tabController;
+
   @override
   void initState() {
     super.initState();
@@ -20,7 +26,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
   }
 
   void init() async {
-    //
+    tabController = TabController(length: 3, vsync: this);
   }
 
   @override
@@ -28,17 +34,86 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> {
     if (mounted) super.setState(fn);
   }
 
+  commonWidget(String? title, String? value) {
+    return Column(
+      children: [
+        RichText(
+          maxLines: 1,
+          overflow: TextOverflow.clip,
+          text: TextSpan(
+            text: '$title : ',
+            style: secondaryTextStyle(),
+            children: <TextSpan>[
+              TextSpan(text: value.validate(), style: boldTextStyle()),
+            ],
+          ),
+        ),
+        16.height,
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget('${widget.userData!.fullName.validate()}', color: primaryColor, textColor: white),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            //
-          ],
-        ),
-      ),
+      appBar: appBarWidget('${widget.userData!.fullName.validate()}',color: primaryColor,textColor: Colors.white),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          commonWidget('Name', widget.userData!.fullName.validate()),
+          commonWidget('Age', widget.userData!.age.validate()),
+          commonWidget('Gender', widget.userData!.gender.validate()),
+          commonWidget('Height', widget.userData!.height.validate()),
+          commonWidget('Weight', widget.userData!.weight.validate()),
+          16.height,
+          Text("Prescription List", style: boldTextStyle()),
+          TabBar(
+            indicatorColor: primaryColor,
+            unselectedLabelColor: Colors.grey,
+            unselectedLabelStyle: secondaryTextStyle(),
+            labelColor: primaryColor,
+            labelStyle: boldTextStyle(),
+            controller: tabController,
+            tabs: [
+              Tab(text: 'Active'),
+              Tab(text: 'Pending'),
+              Tab(text: 'Rejected'),
+            ],
+          ),
+          FutureBuilder<List<PrescriptionModel>>(
+              future: prescriptionService.getPrescriptionByUser(widget.userData!.id),
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  if (snap.data != null) {
+                    List<PrescriptionModel> rejectedPrescription = [];
+                    List<PrescriptionModel> approvePrescription = [];
+                    List<PrescriptionModel> pendingPrescription = [];
+                    snap.data!.forEach((element) {
+                      if (element.status == '0') {
+                        pendingPrescription.add(element);
+                      } else if (element.status == '1') {
+                        approvePrescription.add(element);
+                      } else {
+                        rejectedPrescription.add(element);
+                      }
+                    });
+                    return SizedBox(
+                      height: context.height(),
+                      child: TabBarView(
+                        controller: tabController,
+                        children: [
+                          PrescriptionListComponent(approvePrescription),
+                          PrescriptionListComponent(pendingPrescription),
+                          PrescriptionListComponent(rejectedPrescription),
+                        ],
+                      ),
+                    ).expand();
+                  }
+                }
+                return snapWidgetHelper(snap, loadingWidget: Loader());
+              })
+        ],
+      ).paddingAll(16),
     );
   }
 }

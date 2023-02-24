@@ -1,9 +1,9 @@
-import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Disease_Model.dart';
 import 'package:dsr_admin/model/Medicine_Model.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
+import 'package:nb_utils/nb_utils.dart';
 
 import '../utils/Constant.dart';
 import 'BaseServices.dart';
@@ -14,7 +14,6 @@ class PrescriptionService extends BaseService {
   PrescriptionService() {
     ref = fireStore.collection(PRESCRIPTION);
   }
-
 
   Future<List<PrescriptionModel>> getAllPrescription() async {
     return ref!.get().then((value) {
@@ -41,7 +40,10 @@ class PrescriptionService extends BaseService {
   }
 
   getPrescription(String? id, MedicineModel? data) async {
-    return ref!.doc(id).collection(MEDICINE).add(data!.toJson());
+    return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
+      appStore.setLoading(false);
+      toast('Add Medicine Successfully');
+    });
   }
 
   Future<void> updateDisease({String? id, DiseaseModel? data}) async {

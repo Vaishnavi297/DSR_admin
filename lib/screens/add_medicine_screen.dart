@@ -44,6 +44,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
 
   // region Add Medicine
   Future<void> addMedicine() async {
+    appStore.setLoading(true);
 
     selectedTiming.forEach((element) {
       selectedTime.add(element.name.validate());

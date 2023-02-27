@@ -1,12 +1,13 @@
 import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
 import 'package:dsr_admin/screens/add_medicine_screen.dart';
+import 'package:dsr_admin/screens/zoom_image_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:dsr_admin/utils/cache_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../model/Medicine_Model.dart';
+import '../utils/Common.dart';
 
 class PrescriptionDetailScreen extends StatefulWidget {
   final PrescriptionModel? data;
@@ -29,11 +30,6 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
 
   void init() async {
     future = medicineService.getAllMedicine(widget.data!.id.validate());
-    getPrescriptionData();
-  }
-
-  Future<void> getPrescriptionData() async {
-    //
   }
 
   @override
@@ -54,8 +50,12 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
             16.height,
             Container(
               decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt()),
-              child: CachedImageWidget(url: widget.data!.url.validate(), height: context.height() * 0.4, width: context.width(), radius: defaultRadius, fit: BoxFit.cover),
-            ),
+              child: Hero(
+                  tag: widget.data!.id.toString(),
+                  child: CachedImageWidget(url: widget.data!.url.validate(), height: context.height() * 0.4, width: context.width(), radius: defaultRadius, fit: BoxFit.cover)),
+            ).onTap(() {
+              ZoomImageScreen(widget.data!.url.validate(),widget.data!.id.toString()).launch(context, pageRouteAnimation: PageRouteAnimation.Slide);
+            }),
             16.height,
             Text('Medicines', style: boldTextStyle(size: 20)),
             8.height,
@@ -80,16 +80,23 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                               IconButton(
                                 onPressed: () async {
                                   bool? res = await AddMedicineScreen(data: widget.data!, medicineModel: snap.data![i], isUpdate: true).launch(context);
-                                  if (res ?? false) {
+                                  if (res == true) {
                                     init();
                                     setState(() {});
                                   }
                                 },
-                                icon: Icon(Icons.edit),
+                                icon: Icon(Icons.edit, size: 22),
                               ),
                               IconButton(
-                                onPressed: () {},
-                                icon: Icon(Icons.delete_sharp),
+                                onPressed: () async {
+                                  showConfirmDialogCustom(context,title: 'Are you sure want to remove this medicine?',positiveText: 'Delete',negativeText: 'Cancel', onAccept: (v) async {
+                                    await medicineService.deleteMedicine(id: widget.data!.id, data: snap.data![i]).then((value) {
+                                      init();
+                                      setState(() {});
+                                    });
+                                  });
+                                },
+                                icon: Icon(Icons.delete_sharp, size: 22),
                               ),
                             ],
                           ),
@@ -97,6 +104,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                       },
                     );
                   }
+                  if (snap.data == null && snap.data!.isEmpty) noDataWidget();
                 }
                 return snapWidgetHelper(snap, loadingWidget: Loader());
               },

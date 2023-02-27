@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Medicine_Model.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
@@ -25,9 +24,10 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
 
   List<MedicineTiming> timingList = [];
   final List<MedicineTiming> selectedTiming = [];
-  List<String> selectedTime = [];
+  List<MedicineTimingModel> selectedTime = [];
 
   bool beforeEating = false;
+  num? beforeEat = 0;
 
   @override
   void initState() {
@@ -36,55 +36,69 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   }
 
   void init() async {
-    timingList.add(MedicineTiming(name: MORNING, isSelected: false));
-    timingList.add(MedicineTiming(name: AFTER_NOON, isSelected: false));
-    timingList.add(MedicineTiming(name: EVENING, isSelected: false));
-    timingList.add(MedicineTiming(name: NIGHT, isSelected: false));
+    timingList.add(MedicineTiming(name: MORNING, isSelected: false, value: 1));
+    timingList.add(MedicineTiming(name: AFTER_NOON, isSelected: false, value: 2));
+    timingList.add(MedicineTiming(name: EVENING, isSelected: false, value: 3));
+    timingList.add(MedicineTiming(name: NIGHT, isSelected: false, value: 4));
 
     if (widget.isUpdate.validate()) {
       medicineNameCont.text = widget.medicineModel!.name.validate();
-      widget.medicineModel!.timing!.forEach((element) {
-        log(element);
-        selectedTiming.add(MedicineTiming(name: element, isSelected: true));
-        setState(() {});
-      });
-      log(selectedTiming.length.toString());
-      // timingList.forEach((e1) {
-      //   widget.medicineModel!.timing!.forEach((e2) {
-      //     log("value" + e2.toString());
-      //     log("value--" + e1.name.toString());
-      //
-      //     if (e1.name == e2.validate()) {
-      //       e1.isSelected = true;
-      //     }
-      //   });
-      // });
+      beforeEat = widget.medicineModel!.eatingStatus.validate();
 
-      beforeEating = widget.medicineModel!.eatingStatus.validate();
+      timingList.forEach((e1) {
+        widget.medicineModel!.timing.validate().forEach((e2) {
+
+          if(e1.value == e2.value) {
+            selectedTiming.add(e1);
+            e1.isSelected = true;
+          } else if(e1.value == e2.value) {
+            selectedTiming.add(e1);
+            e1.isSelected = true;
+          } else if(e1.value == e2.value) {
+            selectedTiming.add(e1);
+            e1.isSelected = true;
+          } else if(e1.value == e2.value) {
+            selectedTiming.add(e1);
+            e1.isSelected = true;
+          } else {
+            //
+          }
+        });
+      });
     }
+
     setState(() {});
   }
 
   // region Add Medicine
   Future<void> addMedicine() async {
     appStore.setLoading(true);
-
+    selectedTime.clear();
     selectedTiming.forEach((element) {
-      selectedTime.add(element.name.validate());
+      MedicineTimingModel medicine = MedicineTimingModel();
+      medicine.status = 0;
+      medicine.value = element.value;
+      selectedTime.add(medicine);
     });
 
     MedicineModel data = MedicineModel();
+
     data.name = medicineNameCont.text.validate();
     data.timing = selectedTime;
-    data.eatingStatus = beforeEating;
-    data.status = false;
+    data.eatingStatus = beforeEat;
     data.createdAt = DateTime.now().toString();
     data.updatedAt = DateTime.now().toString();
 
-    if (widget.isUpdate.validate())
-      medicineService.updateMedicine(widget.data!.id.validate(), data);
-    else
-      medicineService.getPrescription(widget.data!.id.validate(), data);
+    if (widget.isUpdate.validate()) {
+      data.id = widget.medicineModel!.id;
+      medicineService.updateMedicine(widget.data!.id.validate(), data).then((value) {
+        finish(context, true);
+      });
+    } else {
+      medicineService.addPrescription(widget.data!.id.validate(), data).then((value) {
+        finish(context, true);
+      });
+    }
   }
 
   // endregion
@@ -116,7 +130,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                 16.height,
                 Container(
                   decoration: boxDecorationWithRoundedCorners(border: Border.all(color: context.dividerColor), backgroundColor: context.scaffoldBackgroundColor),
-                  child: ListView.builder(
+                  child: AnimatedListView(
                     itemCount: timingList.length,
                     shrinkWrap: true,
                     padding: EdgeInsets.zero,
@@ -151,6 +165,11 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
                   dense: true,
                   onChanged: (v) {
                     beforeEating = !beforeEating;
+                    if (v == true) {
+                      beforeEat = 1;
+                    } else {
+                      beforeEat = 0;
+                    }
                     setState(() {});
                   },
                 ),

@@ -25,7 +25,6 @@ class PatientService extends BaseService {
       value.docs.map((y) {
         patientModel.add(PatientModel.fromJson(y.data() as Map<String, dynamic>));
       }).toList();
-      log("message " + patientModel.length.toString());
 
       return patientModel.length;
     });

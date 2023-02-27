@@ -31,6 +31,7 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
+              4.height,
               FutureBuilder<String>(
                 future: patientService.patientByUid(id: widget.data!.uid.validate()),
                 builder: (context, snapData) {

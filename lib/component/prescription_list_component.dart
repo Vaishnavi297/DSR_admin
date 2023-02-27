@@ -18,9 +18,11 @@ class _PrescriptionListComponentState extends State<PrescriptionListComponent> {
   Widget build(BuildContext context) {
     return ListView.builder(
       physics: NeverScrollableScrollPhysics(),
-        itemCount: widget.prescriptionList!.length,
-        itemBuilder: (c, i) {
-          return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
-        });
+      itemCount: widget.prescriptionList!.length,
+      padding: EdgeInsets.all(8),
+      itemBuilder: (c, i) {
+        return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
+      },
+    );
   }
 }

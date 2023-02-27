@@ -42,6 +42,38 @@ userLoginData() async {
   if(appStore.isLoading){
     await appStore.setUID(getStringAsync(UID), isInitializing: true);
     await appStore.setEmail(getStringAsync(USER_EMAIL), isInitializing: true);
+
     await appStore.setName(getStringAsync(NAME), isInitializing: true);
   }
+}
+
+getStatus({String? status}){
+  if(status=='1'){
+    return 'Active';
+  }else if(status=='2'){
+    return 'Reject';
+  }else{
+    return 'Pending';
+  }
+}
+
+getStatusColor({String? status}){
+  if(status=='1'){
+    return Colors.green;
+  }else if(status=='2'){
+    return primaryColor;
+  }else{
+    return Colors.red;
+  }
+}
+
+Widget noDataWidget(){
+  return Column(
+    mainAxisAlignment: MainAxisAlignment.center,
+    children: [
+      Icon(Icons.hourglass_empty, size: 45,color: textSecondaryColorGlobal,),
+      6.height,
+      Text('No Data Found', style: primaryTextStyle()),
+    ],
+  ).center();
 }

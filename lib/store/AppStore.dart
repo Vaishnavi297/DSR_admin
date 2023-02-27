@@ -11,6 +11,9 @@ class AppStore = _AppStore with _$AppStore;
 
 abstract class _AppStore with Store {
   @observable
+  int currentIndex = 0;
+
+  @observable
   bool isLoading = false;
 
   @observable

@@ -29,7 +29,6 @@ class PrescriptionService extends BaseService {
       value.docs.map((y) {
         prescriptionList.add(PrescriptionModel.fromJson(y.data() as Map<String, dynamic>));
       }).toList();
-      log("message " + prescriptionList.length.toString());
 
       return prescriptionList.length;
     });

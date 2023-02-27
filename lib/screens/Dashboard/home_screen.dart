@@ -2,11 +2,13 @@ import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/screens/sign_in_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../../component/home_card_component.dart';
 import '../../component/prescription_component.dart';
 import '../../model/Prescription_Model.dart';
+import '../../utils/Constant.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -60,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
             text: 'Hello, ',
             style: secondaryTextStyle(color: Colors.white),
             children: <TextSpan>[
-              TextSpan(text: appStore.name.capitalizeFirstLetter(), style: boldTextStyle(color: Colors.white)),
+              TextSpan(text: getStringAsync(NAME).capitalizeFirstLetter(), style: boldTextStyle(color: Colors.white)),
             ],
           ),
         ),
@@ -82,38 +84,41 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             Row(
               children: [
-                HomeCardComponent(count: patientCount.toString(), title: "Patients").onTap(() {
-
+                HomeCardComponent(count: patientCount.toString(), icon: Icon(Icons.person, color: primaryColor), title: "Patients").onTap(() {
+                  appStore.currentIndex = 2;
+                  setState(() {});
                 }, hoverColor: Colors.transparent, highlightColor: transparentColor, splashColor: Colors.transparent),
                 16.width,
-                HomeCardComponent(count: prescriptionCount.toString(), title: 'Prescriptions'),
+                HomeCardComponent(count: prescriptionCount.toString(), icon: Icon(Icons.article_rounded, color: primaryColor), title: 'Prescriptions').onTap(() {
+                  appStore.currentIndex = 3;
+                  setState(() {});
+                }, hoverColor: Colors.transparent, highlightColor: transparentColor, splashColor: Colors.transparent),
               ],
             ),
             30.height,
             Text("Prescription List", style: boldTextStyle()),
             Divider(endIndent: 250),
             8.height,
-            SizedBox(
-              height: context.height(),
-              child: FutureBuilder<List<PrescriptionModel>>(
-                future: prescriptionService.getAllPrescription(),
-                builder: (context, snap) {
-                  if (snap.hasData) {
-                    if (snap.data != null && snap.data!.isNotEmpty) {
-                      return ListView.builder(
-                        itemCount: snap.data!.length >= 10 ? 10 : snap.data!.length,
-                        padding: EdgeInsets.zero,
-                        itemBuilder: (context, i) {
-                          PrescriptionModel data = snap.data![i];
+            FutureBuilder<List<PrescriptionModel>>(
+              future: prescriptionService.getAllPrescription(),
+              builder: (context, snap) {
+                if (snap.hasData) {
+                  if (snap.data != null && snap.data!.isNotEmpty) {
+                    return AnimatedListView(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: snap.data!.length >= 10 ? 100 : snap.data!.length,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, i) {
+                        PrescriptionModel data = snap.data![i];
 
-                          return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
-                        },
-                      );
-                    }
+                        return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
+                      },
+                    );
                   }
-                  return snapWidgetHelper(snap, loadingWidget: Loader());
-                },
-              ),
+                }
+                return snapWidgetHelper(snap, loadingWidget: Loader());
+              },
             ),
           ],
         ),

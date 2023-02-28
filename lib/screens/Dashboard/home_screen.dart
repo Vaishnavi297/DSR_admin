@@ -2,9 +2,7 @@ import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/screens/sign_in_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../../component/home_card_component.dart';
 import '../../component/prescription_component.dart';
 import '../../model/Prescription_Model.dart';

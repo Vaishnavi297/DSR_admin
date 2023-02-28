@@ -4,11 +4,11 @@ import 'package:nb_utils/nb_utils.dart';
 import '../utils/Colors.dart';
 
 class HomeCardComponent extends StatefulWidget {
-final String? title;
-final String? count;
+  final String? title;
+  final String? count;
+  final Icon? icon;
 
-
-HomeCardComponent({this.title, this.count});
+  HomeCardComponent({this.title, this.count, this.icon});
 
   @override
   _HomeCardComponentState createState() => _HomeCardComponentState();
@@ -17,7 +17,7 @@ HomeCardComponent({this.title, this.count});
 class _HomeCardComponentState extends State<HomeCardComponent> {
   @override
   Widget build(BuildContext context) {
-    return  Container(
+    return Container(
       height: 130,
       alignment: Alignment.center,
       width: (context.width() - 48) / 2,
@@ -31,7 +31,7 @@ class _HomeCardComponentState extends State<HomeCardComponent> {
               borderRadius: radius(defaultRadius),
               backgroundColor: primaryColor.withOpacity(0.3),
             ),
-            child: Icon(Icons.person, color: primaryColor),
+            child: widget.icon,
           ),
           8.height,
           Text(widget.count.toString(), style: boldTextStyle()),

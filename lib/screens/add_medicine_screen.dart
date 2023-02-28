@@ -42,22 +42,22 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     timingList.add(MedicineTiming(name: NIGHT, isSelected: false, value: 4));
 
     if (widget.isUpdate.validate()) {
+      log(widget.medicineModel!.toJson().toString());
       medicineNameCont.text = widget.medicineModel!.name.validate();
       beforeEat = widget.medicineModel!.eatingStatus.validate();
 
       timingList.forEach((e1) {
         widget.medicineModel!.timing.validate().forEach((e2) {
-
-          if(e1.value == e2.value) {
+          if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
           } else {

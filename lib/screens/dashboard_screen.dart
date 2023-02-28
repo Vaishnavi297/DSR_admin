@@ -9,6 +9,7 @@ import '../main.dart';
 import 'Dashboard/disease_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -28,26 +29,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
 
-    return Scaffold(
-      body: tabs[appStore.currentIndex],
-      bottomNavigationBar: SizedBox(
-        height: 60,
-        child: BottomNavigationBar(
-          onTap: (i) {
-            appStore.currentIndex = i;
-            setState(() {});
-          },
-          type: BottomNavigationBarType.fixed,
-          backgroundColor: context.cardColor,
-          selectedItemColor: primaryColor,
-          unselectedItemColor: primaryColor,
-          currentIndex: appStore.currentIndex,
-          items: [
-            BottomNavigationBarItem(activeIcon: activeWidget('Home'), label: '', icon: Icon(Icons.home)),
-            BottomNavigationBarItem(activeIcon: activeWidget('Disease'), label: '', icon: Icon(Icons.coronavirus)),
-            BottomNavigationBarItem(activeIcon: activeWidget('Patients'), label: '', icon: Icon(Icons.person)),
-            BottomNavigationBarItem(activeIcon: activeWidget('Prescription'), label: '', icon: Icon(Icons.article))
-          ],
+    return DoublePressBackWidget(
+      message: 'Press back again to exit app',
+      child: Scaffold(
+        body: tabs[appStore.currentIndex],
+        bottomNavigationBar: SizedBox(
+          height: 60,
+          child: BottomNavigationBar(
+            onTap: (i) {
+              appStore.currentIndex = i;
+              setState(() {});
+            },
+            type: BottomNavigationBarType.fixed,
+            backgroundColor: context.cardColor,
+            selectedItemColor: primaryColor,
+            unselectedItemColor: primaryColor,
+            currentIndex: appStore.currentIndex,
+            items: [
+              BottomNavigationBarItem(activeIcon: activeWidget('Home'), label: '', icon: Icon(Icons.home)),
+              BottomNavigationBarItem(activeIcon: activeWidget('Disease'), label: '', icon: Icon(Icons.coronavirus)),
+              BottomNavigationBarItem(activeIcon: activeWidget('Patients'), label: '', icon: Icon(Icons.person)),
+              BottomNavigationBarItem(activeIcon: activeWidget('Prescription'), label: '', icon: Icon(Icons.article))
+            ],
+          ),
         ),
       ),
     );

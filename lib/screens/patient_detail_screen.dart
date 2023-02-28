@@ -102,9 +102,9 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                       child: TabBarView(
                         controller: tabController,
                         children: [
-                          PrescriptionListComponent(approvePrescription),
-                          PrescriptionListComponent(pendingPrescription),
-                          PrescriptionListComponent(rejectedPrescription),
+                          PrescriptionListComponent(approvePrescription).paddingSymmetric(horizontal: 4,vertical: 8),
+                          PrescriptionListComponent(pendingPrescription).paddingSymmetric(horizontal: 4,vertical: 8),
+                          PrescriptionListComponent(rejectedPrescription).paddingSymmetric(horizontal: 4,vertical: 8),
                         ],
                       ),
                     ).expand();
@@ -113,7 +113,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                 return snapWidgetHelper(snap, loadingWidget: Loader());
               })
         ],
-      ).paddingAll(16),
+      ).paddingAll(12),
     );
   }
 }

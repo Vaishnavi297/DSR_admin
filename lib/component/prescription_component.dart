@@ -4,6 +4,7 @@ import 'package:nb_utils/nb_utils.dart';
 import '../main.dart';
 import '../model/Prescription_Model.dart';
 import '../screens/prescription_detail_screen.dart';
+import '../utils/Common.dart';
 import '../utils/cache_network_image.dart';
 
 class PrescriptionComponent extends StatefulWidget {
@@ -25,28 +26,38 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CachedImageWidget(url: widget.data!.url.validate(), height: 60, width: 60, radius: defaultRadius, fit: BoxFit.cover),
+          Hero(tag: widget.data!.id.toString(), child: CachedImageWidget(url: widget.data!.url.validate(), height: 60, width: 60, radius: defaultRadius, fit: BoxFit.cover)),
           12.width,
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              4.height,
-              FutureBuilder<String>(
-                future: patientService.patientByUid(id: widget.data!.uid.validate()),
-                builder: (context, snapData) {
-                  if (snapData.hasData) {
-                    if (snapData.data != null && snapData.data!.isNotEmpty) {
-                      return Text(snapData.data.validate(), style: primaryTextStyle());
-                    }
-                  }
-                  return Offstage();
-                },
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  FutureBuilder<String>(
+                    future: patientService.patientByUid(id: widget.data!.uid.validate()),
+                    builder: (context, snapData) {
+                      if (snapData.hasData) {
+                        if (snapData.data != null && snapData.data!.isNotEmpty) {
+                          return Text(snapData.data.validate(), style: primaryTextStyle()).expand();
+                        }
+                      }
+                      return Offstage();
+                    },
+                  ),
+                  8.width,
+                  Text(
+                    getStatus(status: widget.data!.status.validate()),
+                    style: boldTextStyle(color: getStatusColor(status: widget.data!.status.validate()), size: 14),
+                  )
+                ],
               ),
               4.height,
               Text(widget.data!.diseaseData!.name.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
             ],
-          ),
+          ).expand(),
         ],
       ),
     ).onTap(() {

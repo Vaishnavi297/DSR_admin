@@ -41,7 +41,7 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> {
           builder: (context, snap) {
             if (snap.hasData) {
               if (snap.data != null && snap.data!.isNotEmpty) {
-                return ListView.builder(
+                return AnimatedListView(
                   itemCount: snap.data!.length,
                   padding: EdgeInsets.symmetric(vertical: 16),
                   itemBuilder: (context, i) {

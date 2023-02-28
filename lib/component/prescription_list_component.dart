@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 
 import '../model/Prescription_Model.dart';
+import '../utils/Common.dart';
 
 class PrescriptionListComponent extends StatefulWidget {
   final List<PrescriptionModel>? prescriptionList;
@@ -16,13 +17,13 @@ class PrescriptionListComponent extends StatefulWidget {
 class _PrescriptionListComponentState extends State<PrescriptionListComponent> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      physics: NeverScrollableScrollPhysics(),
-      itemCount: widget.prescriptionList!.length,
-      padding: EdgeInsets.all(8),
-      itemBuilder: (c, i) {
-        return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
-      },
-    );
+    return widget.prescriptionList!.isNotEmpty
+        ? AnimatedListView(
+            physics: NeverScrollableScrollPhysics(),
+            itemCount: widget.prescriptionList!.length,
+            itemBuilder: (c, i) {
+              return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
+            })
+        : noDataWidget();
   }
 }

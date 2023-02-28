@@ -1,8 +1,11 @@
 import 'package:dsr_admin/main.dart';
+import 'package:dsr_admin/screens/dashboard_screen.dart';
 import 'package:dsr_admin/screens/sign_in_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
+
 import '../../component/home_card_component.dart';
 import '../../component/prescription_component.dart';
 import '../../model/Prescription_Model.dart';
@@ -84,11 +87,13 @@ class _HomeScreenState extends State<HomeScreen> {
               children: [
                 HomeCardComponent(count: patientCount.toString(), icon: Icon(Icons.person, color: primaryColor), title: "Patients").onTap(() {
                   appStore.currentIndex = 2;
+                  DashboardScreen().launch(context);
                   setState(() {});
                 }, hoverColor: Colors.transparent, highlightColor: transparentColor, splashColor: Colors.transparent),
                 16.width,
                 HomeCardComponent(count: prescriptionCount.toString(), icon: Icon(Icons.article_rounded, color: primaryColor), title: 'Prescriptions').onTap(() {
                   appStore.currentIndex = 3;
+                  DashboardScreen().launch(context);
                   setState(() {});
                 }, hoverColor: Colors.transparent, highlightColor: transparentColor, splashColor: Colors.transparent),
               ],

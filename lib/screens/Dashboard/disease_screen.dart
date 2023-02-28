@@ -78,6 +78,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
       },
     );
   }
+
   ///endregion
 
   @override
@@ -95,12 +96,9 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           builder: (context, snap) {
             if (snap.hasData) {
               if (snap.data != null && snap.data!.isNotEmpty) {
-                return ListView.separated(
+                return AnimatedListView(
                   itemCount: snap.data!.length,
                   padding: EdgeInsets.zero,
-                  separatorBuilder: (c, i) {
-                    return Divider(thickness: 1, height: 0, color: context.dividerColor);
-                  },
                   itemBuilder: (context, i) {
                     DiseaseModel diseaseData = snap.data![i];
                     return Slidable(
@@ -118,6 +116,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                             icon: Icons.edit,
                             label: 'Edit',
                           ),
+                          8.width,
                           SlidableAction(
                             onPressed: (v) {
                               showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
@@ -128,18 +127,24 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                                 setState(() {});
                               });
                             },
-                            backgroundColor: Colors.white,
+                            backgroundColor: Colors.red.withOpacity(0.2),
                             foregroundColor: Colors.redAccent,
                             icon: Icons.delete,
                             label: 'Delete',
                           ),
                         ],
                       ),
-                      child: ListTile(title: Text(diseaseData.name.validate(), style: boldTextStyle())),
+                      child: Container(
+                          width: context.width(),
+                          decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.cardColor),
+                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          margin: EdgeInsets.all(8),
+                          child: Text(diseaseData.name.validate(), style: boldTextStyle())),
                     );
                   },
                 );
               }
+              if (snap.data == null && snap.data!.isEmpty) noDataWidget();
             }
             return snapWidgetHelper(snap, loadingWidget: Loader());
           },

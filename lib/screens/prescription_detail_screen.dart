@@ -54,7 +54,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                   tag: widget.data!.id.toString(),
                   child: CachedImageWidget(url: widget.data!.url.validate(), height: context.height() * 0.4, width: context.width(), radius: defaultRadius, fit: BoxFit.cover)),
             ).onTap(() {
-              ZoomImageScreen(widget.data!.url.validate(), widget.data!.id.toString()).launch(context, pageRouteAnimation: PageRouteAnimation.Slide);
+              ZoomImageScreen(widget.data!.url.validate(),widget.data!.id.toString()).launch(context, pageRouteAnimation: PageRouteAnimation.Slide);
             }),
             16.height,
             Text('Medicines', style: boldTextStyle(size: 20)),
@@ -89,7 +89,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                               ),
                               IconButton(
                                 onPressed: () async {
-                                  showConfirmDialogCustom(context, title: 'Are you sure want to remove this medicine?', positiveText: 'Delete', negativeText: 'Cancel', onAccept: (v) async {
+                                  showConfirmDialogCustom(context,title: 'Are you sure want to remove this medicine?',positiveText: 'Delete',negativeText: 'Cancel', onAccept: (v) async {
                                     await medicineService.deleteMedicine(id: widget.data!.id, data: snap.data![i]).then((value) {
                                       init();
                                       setState(() {});

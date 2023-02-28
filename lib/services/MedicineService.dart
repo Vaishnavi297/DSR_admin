@@ -30,7 +30,7 @@ class MedicineService extends BaseService {
     return data!;
   }
 
-  addPrescription(String? id, MedicineModel? data) async {
+  Future<void> addPrescription(String? id, MedicineModel? data) async {
     return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
       appStore.setLoading(false);
       log("----" + value.id);
@@ -47,9 +47,10 @@ class MedicineService extends BaseService {
   }
 
   Future<void> deleteMedicine({String? id, MedicineModel? data}) async {
-    ref!.doc(id).collection(MEDICINE).doc(data!.id).delete().catchError((e) {
-      appStore.setLoading(false);
-      toast('Deleted Successfully');
+    ref!.doc(id).collection(MEDICINE).doc(data!.id).delete().then((value) {
+      toast('Medicine Delete Successfully');
+    }).catchError((e) {
+      log(e);
     });
   }
 }

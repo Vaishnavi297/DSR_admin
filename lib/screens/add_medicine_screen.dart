@@ -44,7 +44,8 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     if (widget.isUpdate.validate()) {
       log(widget.medicineModel!.toJson().toString());
       medicineNameCont.text = widget.medicineModel!.name.validate();
-      beforeEat = widget.medicineModel!.eatingStatus.validate();
+      beforeEating = widget.medicineModel!.eatingStatus.validate() == 1 ? true: false;
+
 
       timingList.forEach((e1) {
         widget.medicineModel!.timing.validate().forEach((e2) {

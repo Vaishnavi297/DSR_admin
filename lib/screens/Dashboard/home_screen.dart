@@ -97,24 +97,48 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             30.height,
-            Text("Prescription List", style: boldTextStyle()),
-            Divider(endIndent: 250),
-            8.height,
             FutureBuilder<List<PrescriptionModel>>(
               future: prescriptionService.getAllPrescription(),
               builder: (context, snap) {
                 if (snap.hasData) {
                   if (snap.data != null && snap.data!.isNotEmpty) {
-                    return AnimatedListView(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: snap.data!.length >= 10 ? 100 : snap.data!.length,
-                      padding: EdgeInsets.zero,
-                      itemBuilder: (context, i) {
-                        PrescriptionModel data = snap.data![i];
+                    List<PrescriptionModel> pendingPrescription = [];
+                    snap.data!.forEach((element) {
+                      if (element.status == '0') {
+                        pendingPrescription.add(element);
+                      }
+                    });
+                    return Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text("Prescription List", style: boldTextStyle()),
+                            if (pendingPrescription.length >= 10)
+                              TextButton(
+                                onPressed: () {
+                                  appStore.currentIndex = 3;
+                                  DashboardScreen().launch(context);
+                                  setState(() {});
+                                },
+                                child: Text('View all', style: secondaryTextStyle()),
+                              ),
+                          ],
+                        ),
+                        Divider(endIndent: 250),
+                        8.height,
+                        AnimatedListView(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: pendingPrescription.length >= 10 ? 100 : pendingPrescription.length,
+                          padding: EdgeInsets.zero,
+                          itemBuilder: (context, i) {
+                            PrescriptionModel data = pendingPrescription[i];
 
-                        return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
-                      },
+                            return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
+                          },
+                        ),
+                      ],
                     );
                   }
                 }

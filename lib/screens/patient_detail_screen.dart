@@ -55,7 +55,7 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarWidget('${widget.userData!.fullName.validate()}',color: primaryColor,textColor: Colors.white),
+      appBar: appBarWidget('${widget.userData!.fullName.validate()}', color: primaryColor, textColor: Colors.white),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -74,8 +74,8 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
             labelStyle: boldTextStyle(),
             controller: tabController,
             tabs: [
-              Tab(text: 'Active'),
               Tab(text: 'Pending'),
+              Tab(text: 'Active'),
               Tab(text: 'Rejected'),
             ],
           ),
@@ -101,9 +101,9 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                       child: TabBarView(
                         controller: tabController,
                         children: [
-                          PrescriptionListComponent(approvePrescription).paddingSymmetric(horizontal: 4,vertical: 8),
-                          PrescriptionListComponent(pendingPrescription).paddingSymmetric(horizontal: 4,vertical: 8),
-                          PrescriptionListComponent(rejectedPrescription).paddingSymmetric(horizontal: 4,vertical: 8),
+                          PrescriptionListComponent(pendingPrescription).paddingSymmetric(horizontal: 4, vertical: 8),
+                          PrescriptionListComponent(approvePrescription).paddingSymmetric(horizontal: 4, vertical: 8),
+                          PrescriptionListComponent(rejectedPrescription).paddingSymmetric(horizontal: 4, vertical: 8),
                         ],
                       ),
                     ).expand();

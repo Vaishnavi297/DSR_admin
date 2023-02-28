@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsr_admin/model/Medicine_Model.dart';
-import 'package:dsr_admin/model/Patient_Model.dart';
 import 'package:dsr_admin/services/BaseServices.dart';
 import 'package:dsr_admin/utils/Constant.dart';
 import 'package:nb_utils/nb_utils.dart';
@@ -30,7 +29,7 @@ class MedicineService extends BaseService {
     return data!;
   }
 
-  getPrescription(String? id, MedicineModel? data) async {
+  Future<void> addPrescription(String? id, MedicineModel? data) async {
     return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
       appStore.setLoading(false);
       log("----" + value.id);
@@ -46,9 +45,11 @@ class MedicineService extends BaseService {
     });
   }
 
-  Future<void> deleteMedicine({String? id, String? url}) async {
-    ref!.doc(id).delete().catchError((e) {
-      log(e.toString());
+  Future<void> deleteMedicine({String? id, MedicineModel? data}) async {
+    ref!.doc(id).collection(MEDICINE).doc(data!.id).delete().then((value) {
+      toast('Medicine Delete Successfully');
+    }).catchError((e) {
+      log(e);
     });
   }
 }

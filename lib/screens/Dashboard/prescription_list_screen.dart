@@ -1,11 +1,8 @@
 import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
-import 'package:dsr_admin/screens/prescription_detail_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
-import 'package:dsr_admin/utils/cache_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../../component/prescription_component.dart';
 
 class PrescriptionListScreen extends StatefulWidget {

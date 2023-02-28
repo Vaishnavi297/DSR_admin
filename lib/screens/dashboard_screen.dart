@@ -3,7 +3,6 @@ import 'package:dsr_admin/screens/Dashboard/prescription_list_screen.dart';
 import 'package:dsr_admin/screens/Dashboard/patient_list_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../main.dart';
 import 'Dashboard/disease_screen.dart';

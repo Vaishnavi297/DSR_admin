@@ -1,10 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsr_admin/model/Medicine_Model.dart';
-import 'package:dsr_admin/model/Patient_Model.dart';
 import 'package:dsr_admin/services/BaseServices.dart';
 import 'package:dsr_admin/utils/Constant.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../main.dart';
 
 class MedicineService extends BaseService {
@@ -41,7 +39,7 @@ class MedicineService extends BaseService {
 
   Future<void> updateMedicine(String? id, MedicineModel? data) async {
     log(data!.id);
-    return ref!.doc(id).collection(MEDICINE).doc(data!.id).update(data.toJson()).then((value) {
+    return ref!.doc(id).collection(MEDICINE).doc(data.id).update(data.toJson()).then((value) {
       appStore.setLoading(false);
       toast('Updated Successfully');
     });

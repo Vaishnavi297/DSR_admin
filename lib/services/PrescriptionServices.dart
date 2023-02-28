@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Disease_Model.dart';
-import 'package:dsr_admin/model/Medicine_Model.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../utils/Constant.dart';
 import 'BaseServices.dart';
 

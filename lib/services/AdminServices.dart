@@ -1,36 +1,15 @@
-import 'dart:developer';
-import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dsr_admin/model/Patient_Model.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../utils/Constant.dart';
 import 'BaseServices.dart';
 
 class AdminService extends BaseService {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
-  FirebaseStorage _storage = FirebaseStorage.instance;
 
   AdminService() {
     ref = fireStore.collection(ADMIN_COLLECTION);
   }
-
-  //
-  // Future<void> updateUserInfo(Map data, String id, {File? profileImage}) async {
-  //   if (profileImage != null) {
-  //     String fileName = basename(profileImage.path);
-  //     Reference storageRef = _storage.ref().child("$PROFILE_IMAGE/$fileName");
-  //     UploadTask uploadTask = storageRef.putFile(profileImage);
-  //     await uploadTask.then((e) async {
-  //       await e.ref.getDownloadURL().then((value) {
-  //         //appStore.setUserProfile(value);
-  //         data.putIfAbsent("photoUrl", () => value);
-  //       });
-  //     });
-  //   }
-  //
-  //   return ref!.doc(id).update(data as Map<String, Object?>);
-  // }
 
   Future<void> updateUserStatus(Map data, String id) async {
     return ref!.doc(id).update(data as Map<String, Object?>);

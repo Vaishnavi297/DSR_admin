@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../main.dart';
 import '../model/Patient_Model.dart';
 import '../utils/Constant.dart';
@@ -12,6 +11,8 @@ class AuthService {
   Future<void> signUpWithEmailPassword(context, {required String email, required String password, String? phoneNumber, PatientModel? userData}) async {
     UserCredential userCredential = await _auth.createUserWithEmailAndPassword(email: email, password: password).catchError((e) {
       toast(e.toString(), print: true);
+
+     return e;
     });
     log('=====User Data ${userCredential.user}=======');
 

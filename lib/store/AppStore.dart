@@ -1,8 +1,5 @@
 import 'package:mobx/mobx.dart';
 import 'package:nb_utils/nb_utils.dart';
-
-import '../model/Patient_Model.dart';
-import '../utils/Common.dart';
 import '../utils/Constant.dart';
 
 part 'AppStore.g.dart';

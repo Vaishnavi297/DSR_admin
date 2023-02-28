@@ -2,7 +2,6 @@ import 'package:dsr_admin/model/Patient_Model.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../component/prescription_list_component.dart';
 import '../main.dart';
 import '../model/Prescription_Model.dart';

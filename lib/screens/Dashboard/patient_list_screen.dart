@@ -4,7 +4,6 @@ import 'package:dsr_admin/screens/patient_detail_screen.dart';
 import 'package:dsr_admin/utils/Colors.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../../utils/Common.dart';
 
 class PatientListScreen extends StatefulWidget {

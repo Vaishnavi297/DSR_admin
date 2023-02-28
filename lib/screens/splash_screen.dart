@@ -2,7 +2,6 @@ import 'package:dsr_admin/screens/dashboard_screen.dart';
 import 'package:dsr_admin/screens/sign_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
-
 import '../main.dart';
 import '../utils/Constant.dart';
 import '../utils/Images.dart';
@@ -39,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> {
           children: [
             Image.asset(ic_app_logo, height: 150, width: 150),
             SizedBox(height: 16),
-            Text(AppName, style: appTheme.boldTextStyle()),
+            Text(AppName, style: boldTextStyle()),
           ],
         ),
       ),

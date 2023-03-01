@@ -22,8 +22,12 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> with Si
   }
 
   void init() {
-    future = prescriptionService.getAllPrescription();
     tabController = TabController(length: 3, vsync: this);
+    futureMethod();
+  }
+
+  void futureMethod() {
+    future = prescriptionService.getAllPrescription();
   }
 
   @override
@@ -74,9 +78,30 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> with Si
                         child: TabBarView(
                           controller: tabController,
                           children: [
-                            PrescriptionListComponent(pendingPrescription).paddingSymmetric(horizontal: 16, vertical: 8),
-                            PrescriptionListComponent(approvePrescription).paddingSymmetric(horizontal: 16, vertical: 8),
-                            PrescriptionListComponent(rejectedPrescription).paddingSymmetric(horizontal: 16, vertical: 8),
+                            PrescriptionListComponent(
+                              pendingPrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 16, vertical: 8),
+                            PrescriptionListComponent(
+                              approvePrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 16, vertical: 8),
+                            PrescriptionListComponent(
+                              rejectedPrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 16, vertical: 8),
                           ],
                         ),
                       ).expand();

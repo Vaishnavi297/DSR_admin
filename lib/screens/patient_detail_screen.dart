@@ -17,6 +17,7 @@ class PatientDetailScreen extends StatefulWidget {
 
 class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTickerProviderStateMixin {
   TabController? tabController;
+  Future<List<PrescriptionModel>>? future;
 
   @override
   void initState() {
@@ -26,6 +27,11 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
 
   void init() async {
     tabController = TabController(length: 3, vsync: this);
+    futureMethod();
+  }
+
+  void futureMethod() {
+    future = prescriptionService.getPrescriptionByUser(widget.userData!.id);
   }
 
   @override
@@ -56,63 +62,93 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: appBarWidget('${widget.userData!.fullName.validate()}', color: primaryColor, textColor: Colors.white),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          commonWidget('Name', widget.userData!.fullName.validate()),
-          commonWidget('Age', widget.userData!.age),
-          commonWidget('Gender', widget.userData!.gender.validate()),
-          commonWidget('Height', widget.userData!.height.validate()),
-          commonWidget('Weight', widget.userData!.weight.validate()),
-          16.height,
-          Text("Prescription List", style: boldTextStyle()),
-          TabBar(
-            indicatorColor: primaryColor,
-            unselectedLabelColor: Colors.grey,
-            unselectedLabelStyle: secondaryTextStyle(),
-            labelColor: primaryColor,
-            labelStyle: boldTextStyle(),
-            controller: tabController,
-            tabs: [
-              Tab(text: 'Pending'),
-              Tab(text: 'Active'),
-              Tab(text: 'Rejected'),
-            ],
-          ),
-          FutureBuilder<List<PrescriptionModel>>(
-              future: prescriptionService.getPrescriptionByUser(widget.userData!.id),
-              builder: (context, snap) {
-                if (snap.hasData) {
-                  if (snap.data != null) {
-                    List<PrescriptionModel> rejectedPrescription = [];
-                    List<PrescriptionModel> approvePrescription = [];
-                    List<PrescriptionModel> pendingPrescription = [];
-                    snap.data!.forEach((element) {
-                      if (element.status == '0') {
-                        pendingPrescription.add(element);
-                      } else if (element.status == '1') {
-                        approvePrescription.add(element);
-                      } else {
-                        rejectedPrescription.add(element);
-                      }
-                    });
-                    return SizedBox(
-                      height: context.height(),
-                      child: TabBarView(
-                        controller: tabController,
-                        children: [
-                          PrescriptionListComponent(pendingPrescription).paddingSymmetric(horizontal: 4, vertical: 8),
-                          PrescriptionListComponent(approvePrescription).paddingSymmetric(horizontal: 4, vertical: 8),
-                          PrescriptionListComponent(rejectedPrescription).paddingSymmetric(horizontal: 4, vertical: 8),
-                        ],
-                      ),
-                    ).expand();
+      body: RefreshIndicator(
+        onRefresh: () async {
+          await 1.seconds.delay;
+          futureMethod();
+          setState(() {});
+        },
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            commonWidget('Name', widget.userData!.fullName.validate()),
+            commonWidget('Age', widget.userData!.age),
+            commonWidget('Gender', widget.userData!.gender.validate()),
+            commonWidget('Height', widget.userData!.height.validate()),
+            commonWidget('Weight', widget.userData!.weight.validate()),
+            16.height,
+            Text("Prescription List", style: boldTextStyle()),
+            TabBar(
+              indicatorColor: primaryColor,
+              unselectedLabelColor: Colors.grey,
+              unselectedLabelStyle: secondaryTextStyle(),
+              labelColor: primaryColor,
+              labelStyle: boldTextStyle(),
+              controller: tabController,
+              tabs: [
+                Tab(text: 'Pending'),
+                Tab(text: 'Active'),
+                Tab(text: 'Rejected'),
+              ],
+            ),
+            FutureBuilder<List<PrescriptionModel>>(
+                future: future,
+                builder: (context, snap) {
+                  if (snap.hasData) {
+                    if (snap.data != null) {
+                      List<PrescriptionModel> rejectedPrescription = [];
+                      List<PrescriptionModel> approvePrescription = [];
+                      List<PrescriptionModel> pendingPrescription = [];
+
+                      snap.data!.forEach((element) {
+                        if (element.status == '0') {
+                          pendingPrescription.add(element);
+                        } else if (element.status == '1') {
+                          approvePrescription.add(element);
+                        } else {
+                          rejectedPrescription.add(element);
+                        }
+                      });
+
+                      return SizedBox(
+                        height: context.height(),
+                        child: TabBarView(
+                          controller: tabController,
+                          children: [
+                            PrescriptionListComponent(
+                              pendingPrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 4, vertical: 8),
+                            PrescriptionListComponent(
+                              approvePrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 4, vertical: 8),
+                            PrescriptionListComponent(
+                              rejectedPrescription,
+                              voidCallBack: () async {
+                                await 1.seconds.delay;
+                                futureMethod();
+                                setState(() {});
+                              },
+                            ).paddingSymmetric(horizontal: 4, vertical: 8),
+                          ],
+                        ),
+                      ).expand();
+                    }
                   }
-                }
-                return snapWidgetHelper(snap, loadingWidget: Loader());
-              })
-        ],
-      ).paddingAll(12),
+                  return snapWidgetHelper(snap, loadingWidget: Loader());
+                })
+          ],
+        ).paddingAll(12),
+      ),
     );
   }
 }

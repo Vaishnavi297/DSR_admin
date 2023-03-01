@@ -8,14 +8,23 @@ import '../utils/cache_network_image.dart';
 
 class PrescriptionComponent extends StatefulWidget {
   final PrescriptionModel? data;
+  final VoidCallback? voidCallBack;
 
-  PrescriptionComponent(this.data);
+  PrescriptionComponent(this.data, {this.voidCallBack});
 
   @override
   _PrescriptionComponentState createState() => _PrescriptionComponentState();
 }
 
 class _PrescriptionComponentState extends State<PrescriptionComponent> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  void init() {
+    //
+  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,7 +69,12 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
         ],
       ),
     ).onTap(() {
-      PrescriptionDetailScreen(data: widget.data).launch(context);
+      PrescriptionDetailScreen(
+        data: widget.data,
+        voidCallBack: () {
+          widget.voidCallBack?.call();
+        },
+      ).launch(context);
     }, hoverColor: Colors.transparent, splashColor: Colors.transparent, highlightColor: Colors.transparent);
   }
 }

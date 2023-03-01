@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dsr_admin/model/Disease_Model.dart';
+import 'package:dsr_admin/main.dart';
 import 'package:dsr_admin/model/Prescription_Model.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../utils/Constant.dart';
@@ -39,16 +39,15 @@ class PrescriptionService extends BaseService {
     });
   }
 
-
-
-
-  Future<void> updateDisease({String? id, DiseaseModel? data}) async {
-    ref!.doc(id).update(data!.toJson()).catchError((e) {
-      log(e.toString());
+  Future<void> updatePrescription({String? id, PrescriptionModel? data}) async {
+    log(data!.id);
+    return ref!.doc(id).update(data.toJson()).then((value) {
+      appStore.setLoading(false);
+      toast('Updated Successfully');
     });
   }
 
-  Future<void> deleteDisease({String? id, String? url}) async {
+  Future<void> deletePrescription({String? id, String? url}) async {
     ref!.doc(id).delete().catchError((e) {
       log(e.toString());
     });

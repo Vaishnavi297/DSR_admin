@@ -48,17 +48,16 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
 
       timingList.forEach((e1) {
         widget.medicineModel!.timing.validate().forEach((e2) {
-
-          if(e1.value == e2.value) {
+          if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
-          } else if(e1.value == e2.value) {
+          } else if (e1.value == e2.value) {
             selectedTiming.add(e1);
             e1.isSelected = true;
           } else {
@@ -74,6 +73,8 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   // region Add Medicine
   Future<void> addMedicine() async {
     appStore.setLoading(true);
+    hideKeyboard(context);
+
     selectedTime.clear();
     selectedTiming.forEach((element) {
       MedicineTimingModel medicine = MedicineTimingModel();

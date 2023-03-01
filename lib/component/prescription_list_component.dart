@@ -6,8 +6,9 @@ import '../utils/Common.dart';
 
 class PrescriptionListComponent extends StatefulWidget {
   final List<PrescriptionModel>? prescriptionList;
+  final VoidCallback? voidCallBack;
 
-  PrescriptionListComponent(this.prescriptionList);
+  PrescriptionListComponent(this.prescriptionList, {this.voidCallBack});
 
   @override
   _PrescriptionListComponentState createState() => _PrescriptionListComponentState();
@@ -21,8 +22,14 @@ class _PrescriptionListComponentState extends State<PrescriptionListComponent> {
             physics: NeverScrollableScrollPhysics(),
             itemCount: widget.prescriptionList!.length,
             itemBuilder: (c, i) {
-              return PrescriptionComponent(widget.prescriptionList![i]).paddingSymmetric(vertical: 8);
-            })
+              return PrescriptionComponent(
+                widget.prescriptionList![i],
+                voidCallBack: () {
+                  widget.voidCallBack?.call();
+                },
+              ).paddingSymmetric(vertical: 8);
+            },
+          )
         : noDataWidget();
   }
 }

@@ -7,10 +7,11 @@ class PrescriptionModel {
   String? path;
   String? url;
   String? uid;
+  String? reason;
   String? createdAt;
   String? updatedAt;
 
-  PrescriptionModel(this.diseaseData, this.id, this.status, this.path, this.url, this.uid, this.createdAt, this.updatedAt);
+  PrescriptionModel({this.diseaseData, this.id, this.status, this.path, this.url, this.uid, this.createdAt, this.updatedAt});
 
   PrescriptionModel.fromJson(Map<String, dynamic> json) {
     diseaseData = json['disease_data'] != null ? DiseaseModel.fromJson(json['disease_data']) : null;
@@ -21,6 +22,7 @@ class PrescriptionModel {
     uid = json['user_id'];
     createdAt = json['create_date'];
     updatedAt = json['update_date'];
+    reason = json['reason'];
   }
 
   Map<String, dynamic> toJson() {
@@ -36,6 +38,7 @@ class PrescriptionModel {
     data['uid'] = this.uid;
     data['create_date'] = this.createdAt;
     data['update_date'] = this.updatedAt;
+    data['reason'] = this.reason;
     return data;
   }
 }

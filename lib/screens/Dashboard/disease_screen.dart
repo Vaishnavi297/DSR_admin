@@ -13,8 +13,16 @@ class DiseaseScreen extends StatefulWidget {
 
 class _DiseaseScreenState extends State<DiseaseScreen> {
   TextEditingController diseaseCont = TextEditingController();
+  TextEditingController searchCont = TextEditingController();
+
+  FocusNode searchFocus = FocusNode();
+  List<DiseaseModel> disease = [];
+  List<DiseaseModel> searchList = [];
 
   Future<List<DiseaseModel>>? future;
+  List<DiseaseModel>? diseaseList = [];
+
+  bool? isSearch = false;
 
   @override
   void initState() {
@@ -24,6 +32,27 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
 
   void init() {
     future = diseaseService.getAllDisease();
+    200.milliseconds.delay.then((value) => context.requestFocus(searchFocus));
+    loadDisease();
+  }
+
+  void loadDisease() {
+    diseaseService.getAllDisease().then((value) {
+      log(value);
+      disease = value;
+      if (searchCont.text.isNotEmpty) {
+        searchList.clear();
+        for (int i = 0; i <= searchCont.text.length; i++) {
+          String data = disease[i].name.validate();
+          if (data.toLowerCase().contains(searchCont.text.toLowerCase())) {
+            searchList.add(disease[i]);
+            setState(() {});
+          }
+        }
+      }
+    }).catchError((e) {
+      log(e);
+    });
   }
 
   /// region Add/update disease
@@ -96,52 +125,74 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           builder: (context, snap) {
             if (snap.hasData) {
               if (snap.data != null && snap.data!.isNotEmpty) {
-                return AnimatedListView(
-                  itemCount: snap.data!.length,
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, i) {
-                    DiseaseModel diseaseData = snap.data![i];
-                    return Slidable(
-                      key: ValueKey(0),
-                      endActionPane: ActionPane(
-                        motion: ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            onPressed: (v) {
-                              diseaseCont.text = diseaseData.name.toString();
-                              addDiseaseWidget(isUpdate: true, id: diseaseData.id.validate());
-                            },
-                            backgroundColor: Colors.black12,
-                            foregroundColor: Colors.black,
-                            icon: Icons.edit,
-                            label: 'Edit',
-                          ),
-                          8.width,
-                          SlidableAction(
-                            onPressed: (v) {
-                              showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
-                                diseaseService.deleteDisease(id: diseaseData.id).then((value) {
-                                  setState(() {});
-                                  toast('Delete Successfully');
-                                });
-                                setState(() {});
-                              });
-                            },
-                            backgroundColor: Colors.red.withOpacity(0.2),
-                            foregroundColor: Colors.redAccent,
-                            icon: Icons.delete,
-                            label: 'Delete',
-                          ),
-                        ],
-                      ),
-                      child: Container(
+                diseaseList = snap.data!;
+                return Column(
+                  children: [
+                    AppTextField(
+                      controller: searchCont,
+                      decoration: inputDecoration(context, prefixIcon: Icon(Icons.search), labelText: 'Search Disease'),
+                      textFieldType: TextFieldType.EMAIL,
+                      errorThisFieldRequired: 'This field is required',
+                      autoFillHints: [AutofillHints.email],
+                      onChanged: (c) {
+                        isSearch = true;
+                        setState(() {
+                          searchList = disease.where((u) => (u.name!.toLowerCase().contains(c.toLowerCase()) || u.name!.toLowerCase().contains(c.toLowerCase()))).toList();
+                        });
+                      },
+                      onFieldSubmitted: (v) {
+                        loadDisease();
+                        isSearch = false;
+                      },
+                    ).paddingAll(8),
+                    AnimatedListView(
+                      shrinkWrap: true,
+                      itemCount: isSearch == true ? searchList.length : snap.data!.length,
+                      padding: EdgeInsets.zero,
+                      itemBuilder: (context, i) {
+                        DiseaseModel diseaseData = isSearch == true ? searchList[i] : snap.data![i];
+                        return Container(
                           width: context.width(),
                           decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.cardColor),
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 16),
+                          padding: EdgeInsets.only(left: 12, top: 6, bottom: 6),
                           margin: EdgeInsets.all(8),
-                          child: Text(diseaseData.name.validate(), style: boldTextStyle())),
-                    );
-                  },
+                          child: Row(
+                            children: [
+                              Text(diseaseData.name.validate(), style: primaryTextStyle()).expand(),
+                              InkWell(
+                                onTap: () {
+                                  diseaseCont.text = diseaseData.name.toString();
+                                  addDiseaseWidget(isUpdate: true, id: diseaseData.id.validate());
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(6),
+                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius),backgroundColor: primaryColor.withOpacity(0.2)),
+                                  child: Icon(Icons.edit, color: primaryColor,size: 20),
+                                ),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
+                                    diseaseService.deleteDisease(id: diseaseData.id).then((value) {
+                                      setState(() {});
+                                      toast('Delete Successfully');
+                                    });
+                                    setState(() {});
+                                  });
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.all(6),
+                                  margin: EdgeInsets.only(left: 8,right: 8),
+                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius),backgroundColor: Colors.red.withOpacity(0.2)),
+                                  child: Icon(Icons.delete, color: Colors.red,size: 20),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    ).expand(),
+                  ],
                 );
               }
               if (snap.data == null && snap.data!.isEmpty) noDataWidget();

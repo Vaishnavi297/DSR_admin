@@ -59,7 +59,7 @@ getStatus({String? status}){
 getStatusColor({String? status}){
   if(status=='1'){
     return Colors.green;
-  }else if(status=='2'){
+  }else if(status=='0'){
     return primaryColor;
   }else{
     return Colors.red;

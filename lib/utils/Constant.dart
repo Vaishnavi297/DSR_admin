@@ -37,3 +37,5 @@ Country defaultCountry() {
     fullExampleWithPlusSign: '+919123456789',
   );
 }
+
+const PER_PAGE_CHAT_LIST_COUNT=15;

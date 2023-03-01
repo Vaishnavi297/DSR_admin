@@ -39,6 +39,9 @@ class PatientService extends BaseService {
     return name;
   }
 
+  Query chatMessagesWithPagination() {
+    return ref!.orderBy('create_date',descending: true);
+  }
   Future<void> updatePatient({String? id, PatientModel? data}) async {
     ref!.doc(id).update(data!.toJson()).catchError((e) {
       log(e.toString());

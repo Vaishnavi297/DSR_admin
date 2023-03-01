@@ -142,6 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     );
                   }
                 }
+                if (snap.data != null && snap.data!.isNotEmpty) NoDataWidget().center();
                 return snapWidgetHelper(snap, loadingWidget: Loader());
               },
             ),

@@ -48,7 +48,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
         color: primaryColor,
         textColor: white,
         actions: [
-          if (widget.data!.status != "2")
+          if (widget.data!.status == "0")
             TextButton(
               child: Text('Reject', style: boldTextStyle(color: white)),
               onPressed: () {

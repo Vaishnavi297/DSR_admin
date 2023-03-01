@@ -28,7 +28,7 @@ class MedicineService extends BaseService {
     return data!;
   }
 
-  Future<void> addPrescription(String? id, MedicineModel? data) async {
+  Future<void> addMedicine(String? id, MedicineModel? data) async {
     return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
       appStore.setLoading(false);
       log("----" + value.id);

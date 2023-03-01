@@ -97,7 +97,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
         finish(context, true);
       });
     } else {
-      medicineService.addPrescription(widget.data!.id.validate(), data).then((value) {
+      medicineService.addMedicine(widget.data!.id.validate(), data).then((value) {
         finish(context, true);
       });
     }

@@ -127,22 +127,23 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Divider(endIndent: 250),
                         8.height,
-                        AnimatedListView(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: pendingPrescription.length >= 10 ? 100 : pendingPrescription.length,
-                          padding: EdgeInsets.zero,
-                          itemBuilder: (context, i) {
-                            PrescriptionModel data = pendingPrescription[i];
+                        pendingPrescription.isNotEmpty
+                            ? AnimatedListView(
+                                shrinkWrap: true,
+                                physics: NeverScrollableScrollPhysics(),
+                                itemCount: pendingPrescription.length >= 10 ? 100 : pendingPrescription.length,
+                                padding: EdgeInsets.zero,
+                                itemBuilder: (context, i) {
+                                  PrescriptionModel data = pendingPrescription[i];
 
-                            return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
-                          },
-                        ),
+                                  return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
+                                },
+                              )
+                            : NoDataWidget().center(),
                       ],
                     );
                   }
                 }
-                if (snap.data != null && snap.data!.isNotEmpty) NoDataWidget().center();
                 return snapWidgetHelper(snap, loadingWidget: Loader());
               },
             ),

@@ -89,12 +89,14 @@ class _PatientListScreenState extends State<PatientListScreen> {
                       },
                     ).paddingAll(8),
                     AnimatedListView(
+                      shrinkWrap: true,
+                      padding: EdgeInsets.all(8),
                       itemCount: isSearch == true ? searchList.length : snap.data!.length,
-                      padding: EdgeInsets.all(12),
                       itemBuilder: (context, i) {
                         PatientModel patientData = isSearch == true ? searchList[i] : snap.data![i];
 
                         return Container(
+                          margin: EdgeInsets.all(8),
                           decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
                           padding: EdgeInsets.all(8),
                           child: Column(

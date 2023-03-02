@@ -97,7 +97,26 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
         finish(context, true);
       });
     } else {
-      medicineService.addMedicine(widget.data!.id.validate(), data).then((value) {
+      medicineService.addMedicine(widget.data!.id.validate(), data).then((value) async {
+
+        PrescriptionModel data = PrescriptionModel();
+        data.diseaseData = widget.data!.diseaseData;
+        data.id = widget.data!.id.validate();
+        data.url = widget.data!.url.validate();
+        data.path = widget.data!.path.validate();
+        data.uid = widget.data!.uid.validate();
+        data.reason = null;
+        data.createdAt = widget.data!.createdAt.validate();
+        data.updatedAt = DateTime.now().toString();
+        data.status = '1';
+
+        appStore.setLoading(true);
+
+        await prescriptionService.updatePrescription(id: widget.data!.id.validate(), data: data).then((value) {
+        }).catchError((e) {
+          toast(e.toString());
+        });
+
         finish(context, true);
       });
     }

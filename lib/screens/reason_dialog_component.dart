@@ -48,7 +48,7 @@ class _ReasonDialogState extends State<ReasonDialog> {
         toast(e.toString());
       });
 
-      appStore.setLoading(true);
+      appStore.setLoading(false);
     }
   }
 

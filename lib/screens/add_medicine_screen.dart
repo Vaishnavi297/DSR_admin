@@ -26,6 +26,8 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
   final List<MedicineTiming> selectedTiming = [];
   List<MedicineTimingModel> selectedTime = [];
 
+  MedicineModel? medicineData;
+
   bool beforeEating = false;
   num? beforeEat = 0;
 
@@ -88,32 +90,29 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     data.name = medicineNameCont.text.validate();
     data.timing = selectedTime;
     data.eatingStatus = beforeEat;
+    data.uid = widget.data!.uid.validate();
+    data.prescriptionId = widget.data!.id.validate();
     data.createdAt = DateTime.now().toString();
     data.updatedAt = DateTime.now().toString();
 
     if (widget.isUpdate.validate()) {
       data.id = widget.medicineModel!.id;
-      medicineService.updateMedicine(widget.data!.id.validate(), data).then((value) {
+      medicineService.updateMedicine(id: data.id.validate(), data: data).then((value) {
         finish(context, true);
       });
     } else {
       medicineService.addMedicine(widget.data!.id.validate(), data).then((value) async {
-
-        PrescriptionModel data = PrescriptionModel();
-        data.diseaseData = widget.data!.diseaseData;
+        MedicineModel data = MedicineModel();
         data.id = widget.data!.id.validate();
-        data.url = widget.data!.url.validate();
-        data.path = widget.data!.path.validate();
+        data.name = medicineNameCont.text.validate();
+        data.eatingStatus = beforeEating.validate() ? 1 : 0;
         data.uid = widget.data!.uid.validate();
-        data.reason = null;
+        data.prescriptionId = widget.data!.id.validate();
         data.createdAt = widget.data!.createdAt.validate();
         data.updatedAt = DateTime.now().toString();
-        data.status = '1';
 
-        appStore.setLoading(true);
 
-        await prescriptionService.updatePrescription(id: widget.data!.id.validate(), data: data).then((value) {
-        }).catchError((e) {
+        await medicineService.updateMedicine(id: widget.data!.id.validate(), data: data).then((value) {}).catchError((e) {
           toast(e.toString());
         });
 

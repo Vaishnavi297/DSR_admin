@@ -35,7 +35,7 @@ class PrescriptionModel {
     data['status'] = this.status;
     data['path'] = this.path;
     data['url'] = this.url;
-    data['uid'] = this.uid;
+    data['user_id'] = this.uid;
     data['create_date'] = this.createdAt;
     data['update_date'] = this.updatedAt;
     data['reason'] = this.reason;

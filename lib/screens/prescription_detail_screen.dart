@@ -32,6 +32,7 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
   }
 
   void init() async {
+    log("============"+widget.data!.id.validate());
     future = medicineService.getAllMedicine(widget.data!.id.validate());
   }
 
@@ -118,7 +119,6 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                                           init();
                                           setState(() {});
                                         }
-                                        ;
                                       }
                                     },
                                     icon: Icon(Icons.edit, size: 22),

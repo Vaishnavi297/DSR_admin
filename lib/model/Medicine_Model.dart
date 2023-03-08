@@ -1,6 +1,8 @@
 class MedicineModel {
   String? id;
   String? name;
+  String? prescriptionId;
+  String? uid;
   List<MedicineTimingModel>? timing;
   num? eatingStatus;
   String? createdAt;
@@ -10,6 +12,8 @@ class MedicineModel {
 
   MedicineModel.fromJson(Map<String, dynamic> json) {
     id = json['id'];
+    prescriptionId = json['prescriptionId'];
+    uid = json['uid'];
     name = json['name'];
     eatingStatus = json['eating_status'];
     createdAt = json['created_at'];
@@ -25,6 +29,8 @@ class MedicineModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
     data['id'] = this.id;
+    data['uid'] = this.uid;
+    data['prescriptionId'] = this.prescriptionId;
     data['name'] = this.name;
     data['eating_status'] = this.eatingStatus;
     data['created_at'] = this.createdAt;
@@ -42,7 +48,7 @@ class MedicineTiming {
   String? name;
   bool? isSelected;
 
-  MedicineTiming({this.name, this.isSelected,this.value});
+  MedicineTiming({this.name, this.isSelected, this.value});
 }
 
 class MedicineTimingModel {

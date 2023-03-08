@@ -9,14 +9,16 @@ class MedicineService extends BaseService {
   FirebaseFirestore fireStore = FirebaseFirestore.instance;
 
   MedicineService() {
-    ref = fireStore.collection(PRESCRIPTION);
+    ref = fireStore.collection(MEDICINE);
   }
 
   Future<List<MedicineModel>> getAllMedicine(String? id) async {
-    return ref!.doc(id).collection(MEDICINE).get().then((value) {
+    return ref!.where('prescriptionId',isEqualTo: id).get().then((value) {
       return value.docs.map((y) {
-        return MedicineModel.fromJson(y.data());
+        return MedicineModel.fromJson(y.data() as Map<String, dynamic>);
       }).toList();
+    }).catchError((e) {
+      toast("error"+e.toString());
     });
   }
 
@@ -29,24 +31,23 @@ class MedicineService extends BaseService {
   }
 
   Future<void> addMedicine(String? id, MedicineModel? data) async {
-    return ref!.doc(id).collection(MEDICINE).add(data!.toJson()).then((value) {
+    return ref!.add(data!.toJson()).then((value) {
       appStore.setLoading(false);
-      log("----" + value.id);
-      ref!.doc(id).collection(MEDICINE).doc(value.id).update({'id': value.id});
+      ref!.doc(value.id).update({'id': value.id});
       toast('Add Medicine Successfully');
     });
   }
 
-  Future<void> updateMedicine(String? id, MedicineModel? data) async {
+  Future<void> updateMedicine({String? id, MedicineModel? data}) async {
     log(data!.id);
-    return ref!.doc(id).collection(MEDICINE).doc(data.id).update(data.toJson()).then((value) {
+    return ref!.doc(data.id).update(data.toJson()).then((value) {
       appStore.setLoading(false);
       toast('Updated Successfully');
     });
   }
 
   Future<void> deleteMedicine({String? id, MedicineModel? data}) async {
-    ref!.doc(id).collection(MEDICINE).doc(data!.id).delete().then((value) {
+    ref!.doc(data!.id).delete().then((value) {
       log("========value=======" + data.name.toString());
       toast('Medicine Delete Successfully');
     }).catchError((e) {

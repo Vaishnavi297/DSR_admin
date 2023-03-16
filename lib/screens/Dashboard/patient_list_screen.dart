@@ -127,7 +127,7 @@ class _PatientListScreenState extends State<PatientListScreen> {
                   ],
                 );
               }
-              if (snap.data == null && snap.data!.isEmpty) noDataWidget();
+              if (snap.data != []) noDataWidget();
             }
             return snapWidgetHelper(snap, loadingWidget: Loader());
           },

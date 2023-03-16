@@ -48,7 +48,6 @@ class MedicineService extends BaseService {
 
   Future<void> deleteMedicine({String? id, MedicineModel? data}) async {
     ref!.doc(data!.id).delete().then((value) {
-      log("========value=======" + data.name.toString());
       toast('Medicine Delete Successfully');
     }).catchError((e) {
       log(e);

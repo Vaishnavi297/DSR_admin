@@ -8,8 +8,8 @@ class PatientModel {
   String? createdAt;
   String? updatedAt;
   String? password;
-  String? height;
-  String? weight;
+  var height;
+  var weight;
 
   PatientModel({
     this.id,

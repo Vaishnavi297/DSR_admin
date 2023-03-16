@@ -25,6 +25,7 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
   void init() {
     //
   }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -68,13 +69,18 @@ class _PrescriptionComponentState extends State<PrescriptionComponent> {
           ).expand(),
         ],
       ),
-    ).onTap(() {
-      PrescriptionDetailScreen(
+    ).onTap(() async {
+      bool res = await PrescriptionDetailScreen(
         data: widget.data,
         voidCallBack: () {
           widget.voidCallBack?.call();
         },
       ).launch(context);
+      if (res == true) {
+        appStore.setLoading(true);
+        widget.voidCallBack!();
+        setState(() {});
+      }
     }, hoverColor: Colors.transparent, splashColor: Colors.transparent, highlightColor: Colors.transparent);
   }
 }

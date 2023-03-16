@@ -103,7 +103,8 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
     } else {
       medicineService.addMedicine(widget.data!.id.validate(), data).then((value) async {
         MedicineModel data = MedicineModel();
-        data.id = widget.data!.id.validate();
+        log("value" + widget.data!.id.toString());
+        data.id = '';
         data.name = medicineNameCont.text.validate();
         data.eatingStatus = beforeEating.validate() ? 1 : 0;
         data.uid = widget.data!.uid.validate();
@@ -111,8 +112,7 @@ class _AddMedicineScreenState extends State<AddMedicineScreen> {
         data.createdAt = widget.data!.createdAt.validate();
         data.updatedAt = DateTime.now().toString();
 
-
-        await medicineService.updateMedicine(id: widget.data!.id.validate(), data: data).then((value) {}).catchError((e) {
+        await prescriptionService.updatePrescriptionStatus(id: widget.data!.id.validate(), status: '1').then((value) {}).catchError((e) {
           toast(e.toString());
         });
 

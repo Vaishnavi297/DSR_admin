@@ -37,6 +37,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
   }
 
   void loadDisease() {
+    appStore.setLoading(true);
     diseaseService.getAllDisease().then((value) {
       log(value);
       disease = value;
@@ -50,8 +51,10 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
           }
         }
       }
+      appStore.setLoading(false);
     }).catchError((e) {
       log(e);
+      appStore.setLoading(false);
     });
   }
 
@@ -87,18 +90,23 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
       ),
       positiveText: isUpdate.validate() ? "Update" : 'Add',
       onAccept: (v) {
+        appStore.setLoading(true);
         DiseaseModel diseaseModel = DiseaseModel();
         diseaseModel.id = isUpdate == true ? id : '';
-        diseaseModel.name = diseaseCont.text.trim();
+        diseaseModel.name = diseaseCont.text.capitalizeFirstLetter().trim();
         if (!isUpdate.validate()) {
-          diseaseService.addDisease(diseaseModel).then((value) {
+          diseaseService.addDisease(diseaseModel).then((value) async {
+            init();
             setState(() {});
+            appStore.setLoading(false);
 
             toast('Added Successfully');
           });
         } else {
-          diseaseService.updateDisease(id: id, data: diseaseModel).then((value) {
+          diseaseService.updateDisease(id: id, data: diseaseModel).then((value) async {
+            init();
             setState(() {});
+            appStore.setLoading(false);
 
             toast('Updated Successfully');
           });
@@ -166,15 +174,20 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(6),
-                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius),backgroundColor: primaryColor.withOpacity(0.2)),
-                                  child: Icon(Icons.edit, color: primaryColor,size: 20),
+                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius), backgroundColor: primaryColor.withOpacity(0.2)),
+                                  child: Icon(Icons.edit, color: primaryColor, size: 20),
                                 ),
                               ),
                               InkWell(
                                 onTap: () {
                                   showConfirmDialogCustom(context, title: 'Are you sure want to delete Disease?', onAccept: (v) {
                                     diseaseService.deleteDisease(id: diseaseData.id).then((value) {
+                                      appStore.setLoading(true);
+
+                                      init();
                                       setState(() {});
+                                      appStore.setLoading(false);
+
                                       toast('Delete Successfully');
                                     });
                                     setState(() {});
@@ -182,9 +195,9 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
                                 },
                                 child: Container(
                                   padding: EdgeInsets.all(6),
-                                  margin: EdgeInsets.only(left: 8,right: 8),
-                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius),backgroundColor: Colors.red.withOpacity(0.2)),
-                                  child: Icon(Icons.delete, color: Colors.red,size: 20),
+                                  margin: EdgeInsets.only(left: 8, right: 8),
+                                  decoration: boxDecorationWithRoundedCorners(borderRadius: radius(defaultRadius), backgroundColor: Colors.red.withOpacity(0.2)),
+                                  child: Icon(Icons.delete, color: Colors.red, size: 20),
                                 ),
                               ),
                             ],
@@ -197,7 +210,7 @@ class _DiseaseScreenState extends State<DiseaseScreen> {
               }
               if (snap.data == null && snap.data!.isEmpty) noDataWidget();
             }
-            return snapWidgetHelper(snap, loadingWidget: Loader());
+            return snapWidgetHelper(snap, loadingWidget: Loader().visible(appStore.isLoading));
           },
         ),
       ),

@@ -74,8 +74,8 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
             commonWidget('Name', widget.userData!.fullName.validate()),
             commonWidget('Age', widget.userData!.age),
             commonWidget('Gender', widget.userData!.gender.validate()),
-            commonWidget('Height', widget.userData!.height.validate()),
-            commonWidget('Weight', widget.userData!.weight.validate()),
+            commonWidget('Height', widget.userData!.height),
+            commonWidget('Weight', widget.userData!.weight),
             16.height,
             Text("Prescription List", style: boldTextStyle()),
             TabBar(
@@ -120,6 +120,8 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
+
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 4, vertical: 8),
@@ -128,6 +130,8 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
+
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 4, vertical: 8),
@@ -136,6 +140,8 @@ class _PatientDetailScreenState extends State<PatientDetailScreen> with SingleTi
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
+
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 4, vertical: 8),

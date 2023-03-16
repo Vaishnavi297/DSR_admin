@@ -83,6 +83,7 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> with Si
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 16, vertical: 8),
@@ -91,6 +92,8 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> with Si
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
+
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 16, vertical: 8),
@@ -99,6 +102,8 @@ class _PrescriptionListScreenState extends State<PrescriptionListScreen> with Si
                               voidCallBack: () async {
                                 await 1.seconds.delay;
                                 futureMethod();
+                                appStore.setLoading(false);
+
                                 setState(() {});
                               },
                             ).paddingSymmetric(horizontal: 16, vertical: 8),

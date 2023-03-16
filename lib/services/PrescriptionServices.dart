@@ -47,6 +47,13 @@ class PrescriptionService extends BaseService {
     });
   }
 
+  Future<void> updatePrescriptionStatus({String? id, String? status}) async {
+    return ref!.doc(id).get().then((value) {
+      appStore.setLoading(false);
+      ref!.doc(value.id).update({'status': status});
+      toast('Updated Successfully');
+    });
+  }
   Future<void> deletePrescription({String? id, String? url}) async {
     ref!.doc(id).delete().catchError((e) {
       log(e.toString());

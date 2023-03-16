@@ -17,9 +17,11 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int? patientCount = 0;
   int? prescriptionCount = 0;
+  List<PrescriptionModel> pendingPrescription = [];
 
   @override
   void initState() {
+    super.initState();
     prescriptionService.getAllPrescriptionLength().then((value) {
       prescriptionCount = value;
       setState(() {});
@@ -28,7 +30,6 @@ class _HomeScreenState extends State<HomeScreen> {
       patientCount = value;
       setState(() {});
     });
-    super.initState();
   }
 
   logOut() {
@@ -102,12 +103,13 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, snap) {
                 if (snap.hasData) {
                   if (snap.data != null && snap.data!.isNotEmpty) {
-                    List<PrescriptionModel> pendingPrescription = [];
+
                     snap.data!.forEach((element) {
                       if (element.status == '0') {
                         pendingPrescription.add(element);
                       }
                     });
+
                     return Column(
                       children: [
                         Row(
@@ -127,8 +129,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Divider(endIndent: 250),
                         8.height,
-                        pendingPrescription.isNotEmpty
-                            ? AnimatedListView(
+                        pendingPrescription.isEmpty
+                            ? NoDataWidget().center()
+                            : AnimatedListView(
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
                                 itemCount: pendingPrescription.length >= 10 ? 100 : pendingPrescription.length,
@@ -136,10 +139,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemBuilder: (context, i) {
                                   PrescriptionModel data = pendingPrescription[i];
 
-                                  return PrescriptionComponent(data).paddingSymmetric(vertical: 8);
+                                  return PrescriptionComponent(
+                                    data,
+                                    voidCallBack: () {
+                                      setState(() {});
+                                    },
+                                  ).paddingSymmetric(vertical: 8);
                                 },
-                              )
-                            : NoDataWidget().center(),
+                              ),
                       ],
                     );
                   }

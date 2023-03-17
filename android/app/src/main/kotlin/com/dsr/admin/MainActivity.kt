@@ -1,4 +1,4 @@
-package com.dsr.admin
+package com.admin.dsr
 
 import io.flutter.embedding.android.FlutterActivity
 

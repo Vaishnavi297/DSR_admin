@@ -90,7 +90,6 @@ class _PatientListScreenState extends State<PatientListScreen> {
                     ).paddingAll(8),
                     AnimatedListView(
                       shrinkWrap: true,
-                      padding: EdgeInsets.all(8),
                       itemCount: isSearch == true ? searchList.length : snap.data!.length,
                       itemBuilder: (context, i) {
                         PatientModel patientData = isSearch == true ? searchList[i] : snap.data![i];

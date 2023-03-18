@@ -103,8 +103,9 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, snap) {
                 if (snap.hasData) {
                   if (snap.data != null && snap.data!.isNotEmpty) {
-
+                    pendingPrescription.clear();
                     snap.data!.forEach((element) {
+
                       if (element.status == '0') {
                         pendingPrescription.add(element);
                       }

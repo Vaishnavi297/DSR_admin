@@ -43,6 +43,7 @@ android {
         targetSdkVersion 33
         versionCode 1
         versionName '1.0.0'
+        setProperty("archivesBaseName", "DSR Admin - v$versionCode($versionName)")
     }
 
     buildTypes {

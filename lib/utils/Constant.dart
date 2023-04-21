@@ -21,6 +21,7 @@ const DISEASES = 'diseases';
 const PRESCRIPTION = 'prescription_list';
 const PATIENTS = 'patients';
 const MEDICINE = 'medicine';
+const MEDICINE_HISTORY = 'medicine_history';
 
 Country defaultCountry() {
   return Country(

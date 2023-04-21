@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:nb_utils/nb_utils.dart';
 import '../model/Medicine_Model.dart';
 import '../utils/Common.dart';
+import 'medicine_history_screen.dart';
 
 class PrescriptionDetailScreen extends StatefulWidget {
   final PrescriptionModel? data;
@@ -123,6 +124,12 @@ class _PrescriptionDetailScreenState extends State<PrescriptionDetailScreen> {
                                   children: [
                                     Text(snap.data![i].name.validate(), style: primaryTextStyle()),
                                     Spacer(),
+                                    IconButton(
+                                      onPressed: () async {
+                                        MedicineHistoryScreen(medicineModel: snap.data![i]).launch(context);
+                                      },
+                                      icon: Icon(Icons.remove_red_eye_outlined, size: 22),
+                                    ),
                                     IconButton(
                                       onPressed: () async {
                                         if (widget.data!.status == "2") {

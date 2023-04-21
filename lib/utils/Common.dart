@@ -36,9 +36,8 @@ InputDecoration inputDecoration(BuildContext context, {Widget? prefixIcon, Strin
   );
 }
 
-
 userLoginData() async {
-  if(appStore.isLoading){
+  if (appStore.isLoading) {
     await appStore.setUID(getStringAsync(UID), isInitializing: true);
     await appStore.setEmail(getStringAsync(USER_EMAIL), isInitializing: true);
 
@@ -46,31 +45,47 @@ userLoginData() async {
   }
 }
 
-getStatus({String? status}){
-  if(status=='1'){
+getTimeStatus({int? status}) {
+  if (status == 1) {
+    return 'Morning';
+  } else if (status == 2) {
+    return 'Afternoon';
+  } else if (status == 3) {
+    return 'Evening';
+  } else if (status == 4) {
+    return 'Night';
+  }
+}
+
+getStatus({String? status}) {
+  if (status == '1') {
     return 'Active';
-  }else if(status=='2'){
+  } else if (status == '2') {
     return 'Reject';
-  }else{
+  } else {
     return 'Pending';
   }
 }
 
-getStatusColor({String? status}){
-  if(status=='1'){
+getStatusColor({String? status}) {
+  if (status == '1') {
     return Colors.green;
-  }else if(status=='0'){
+  } else if (status == '0') {
     return primaryColor;
-  }else{
+  } else {
     return Colors.red;
   }
 }
 
-Widget noDataWidget(){
+Widget noDataWidget() {
   return Column(
     mainAxisAlignment: MainAxisAlignment.center,
     children: [
-      Icon(Icons.hourglass_empty, size: 45,color: textSecondaryColorGlobal,),
+      Icon(
+        Icons.hourglass_empty,
+        size: 45,
+        color: textSecondaryColorGlobal,
+      ),
       6.height,
       Text('No Data Found', style: primaryTextStyle()),
     ],

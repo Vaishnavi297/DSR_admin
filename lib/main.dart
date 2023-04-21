@@ -1,6 +1,7 @@
 import 'package:dsr_admin/screens/splash_screen.dart';
 import 'package:dsr_admin/services/AuthServices.dart';
 import 'package:dsr_admin/services/DiseaseService.dart';
+import 'package:dsr_admin/services/MedicineHistoryService.dart';
 import 'package:dsr_admin/services/MedicineService.dart';
 import 'package:dsr_admin/services/PrescriptionServices.dart';
 import 'package:dsr_admin/services/AdminServices.dart';
@@ -20,7 +21,9 @@ DiseaseService diseaseService = DiseaseService();
 AuthService authService = AuthService();
 PatientService patientService = PatientService();
 PrescriptionService prescriptionService = PrescriptionService();
-MedicineService medicineService=MedicineService();
+MedicineService medicineService = MedicineService();
+MedicineHistoryService medicineHistoryService = MedicineHistoryService();
+
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {

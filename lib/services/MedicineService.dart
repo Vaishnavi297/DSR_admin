@@ -13,13 +13,26 @@ class MedicineService extends BaseService {
   }
 
   Future<List<MedicineModel>> getAllMedicine(String? id) async {
-    return ref!.where('prescriptionId',isEqualTo: id).get().then((value) {
+    return ref!.where('prescriptionId', isEqualTo: id).get().then((value) {
       return value.docs.map((y) {
         return MedicineModel.fromJson(y.data() as Map<String, dynamic>);
       }).toList();
     }).catchError((e) {
-      toast("error"+e.toString());
+      toast("error" + e.toString());
     });
+  }
+
+  Future<List<MedicineModel>> getAllMedicineByIdList(List<String> id) async {
+    if (id.isNotEmpty) {
+      return ref!.where('prescriptionId', whereIn: id).get().then((value) {
+        return value.docs.map((y) {
+          return MedicineModel.fromJson(y.data() as Map<String, dynamic>);
+        }).toList();
+      }).catchError((e) {
+        toast("error" + e.toString());
+      });
+    }
+    return [];
   }
 
   Future<MedicineModel> getAllMedicineId({required String? id}) async {
@@ -52,5 +65,17 @@ class MedicineService extends BaseService {
     }).catchError((e) {
       log(e);
     });
+  }
+
+  Future<void> deleteMedicineByMedicineIdList(List<String> list) async {
+    var batch = FirebaseFirestore.instance.batch();
+    if (list.isNotEmpty) {
+      await ref!.where("prescriptionId", whereIn: list).get().then((value) {
+        value.docs.forEach((element) {
+          batch.delete(ref!.doc(element.id));
+        });
+      });
+      await batch.commit();
+    }
   }
 }

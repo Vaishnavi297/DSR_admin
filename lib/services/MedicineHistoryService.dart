@@ -26,7 +26,8 @@ class MedicineHistoryService extends BaseService {
   Future<MedicineHistoryModel> getAllMedicineId({required String? id}) async {
     MedicineHistoryModel? data;
     await ref!.doc(id).get().then((value) {
-      data = MedicineHistoryModel.fromJson(value.data() as Map<String, dynamic>);
+      data =
+          MedicineHistoryModel.fromJson(value.data() as Map<String, dynamic>);
     });
     return data!;
   }
@@ -53,5 +54,17 @@ class MedicineHistoryService extends BaseService {
     }).catchError((e) {
       log(e);
     });
+  }
+
+  Future<void> deleteMedicineByMedicineIdList(List<String> list) async {
+    var batch = FirebaseFirestore.instance.batch();
+    if(list.isNotEmpty){
+      await ref!.where("medicine_id", whereIn: list).get().then((value) {
+        value.docs.forEach((element) {
+          batch.delete(ref!.doc(element.id));
+        });
+      });
+      await batch.commit();
+    }
   }
 }

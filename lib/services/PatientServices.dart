@@ -49,7 +49,17 @@ class PatientService extends BaseService {
   }
 
   Future<void> deletePatient({String? id, String? url}) async {
-    ref!.doc(id).delete().catchError((e) {
+    var res = await ref!.doc(id).collection("step_calories").get();
+    var batch = FirebaseFirestore.instance.batch();
+    if(res.size != 0) {
+      await ref!.doc(id).collection("step_calories").get().then((value) {
+        for(var element in value.docs) {
+          batch.delete(element.reference);
+        }
+      });
+      await batch.commit();
+    }
+    await ref!.doc(id).delete().catchError((e) {
       log(e.toString());
     });
   }

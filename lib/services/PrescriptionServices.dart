@@ -24,7 +24,8 @@ class PrescriptionService extends BaseService {
     List<PrescriptionModel> prescriptionList = [];
     return ref!.get().then((value) {
       value.docs.map((y) {
-        prescriptionList.add(PrescriptionModel.fromJson(y.data() as Map<String, dynamic>));
+        prescriptionList
+            .add(PrescriptionModel.fromJson(y.data() as Map<String, dynamic>));
       }).toList();
 
       return prescriptionList.length;
@@ -54,9 +55,20 @@ class PrescriptionService extends BaseService {
       toast('Updated Successfully');
     });
   }
+
   Future<void> deletePrescription({String? id, String? url}) async {
     ref!.doc(id).delete().catchError((e) {
       log(e.toString());
     });
+  }
+
+  Future<void> deletePrescriptionByUser(String userId) async {
+    var batch = FirebaseFirestore.instance.batch();
+    await ref!.where("user_id", isEqualTo: userId).get().then((value) {
+      value.docs.forEach((element) {
+        batch.delete(ref!.doc(element.id));
+      });
+    });
+    await batch.commit();
   }
 }

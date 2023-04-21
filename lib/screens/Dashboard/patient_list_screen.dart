@@ -57,7 +57,8 @@ class _PatientListScreenState extends State<PatientListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: context.scaffoldBackgroundColor,
-      appBar: appBarWidget('Patient', showBack: false, color: primaryColor, textColor: white),
+      appBar: appBarWidget('Patient',
+          showBack: false, color: primaryColor, textColor: white),
       body: RefreshIndicator(
         onRefresh: () async {
           await 1.seconds.delay;
@@ -73,14 +74,23 @@ class _PatientListScreenState extends State<PatientListScreen> {
                   children: [
                     AppTextField(
                       controller: searchCont,
-                      decoration: inputDecoration(context, prefixIcon: Icon(Icons.search), labelText: 'Search User'),
+                      decoration: inputDecoration(context,
+                          prefixIcon: Icon(Icons.search),
+                          labelText: 'Search User'),
                       textFieldType: TextFieldType.EMAIL,
                       errorThisFieldRequired: 'This field is required',
                       autoFillHints: [AutofillHints.email],
                       onChanged: (c) {
                         isSearch = true;
                         setState(() {
-                          searchList = disease.where((u) => (u.fullName!.toLowerCase().contains(c.toLowerCase()) || u.fullName!.toLowerCase().contains(c.toLowerCase()))).toList();
+                          searchList = disease
+                              .where((u) => (u.fullName!
+                                      .toLowerCase()
+                                      .contains(c.toLowerCase()) ||
+                                  u.fullName!
+                                      .toLowerCase()
+                                      .contains(c.toLowerCase())))
+                              .toList();
                         });
                       },
                       onFieldSubmitted: (v) {
@@ -90,19 +100,26 @@ class _PatientListScreenState extends State<PatientListScreen> {
                     ).paddingAll(8),
                     AnimatedListView(
                       shrinkWrap: true,
-                      itemCount: isSearch == true ? searchList.length : snap.data!.length,
+                      itemCount: isSearch == true
+                          ? searchList.length
+                          : snap.data!.length,
                       itemBuilder: (context, i) {
-                        PatientModel patientData = isSearch == true ? searchList[i] : snap.data![i];
+                        PatientModel patientData =
+                            isSearch == true ? searchList[i] : snap.data![i];
 
                         return Container(
                           margin: EdgeInsets.all(8),
-                          decoration: boxDecorationRoundedWithShadow(defaultRadius.toInt(), backgroundColor: context.scaffoldBackgroundColor),
+                          decoration: boxDecorationRoundedWithShadow(
+                              defaultRadius.toInt(),
+                              backgroundColor: context.scaffoldBackgroundColor),
                           padding: EdgeInsets.all(8),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               8.height,
-                              Text(patientData.fullName.validate(), style: boldTextStyle(color: textPrimaryColorGlobal)),
+                              Text(patientData.fullName.validate(),
+                                  style: boldTextStyle(
+                                      color: textPrimaryColorGlobal)),
                               8.height,
                               RichText(
                                 maxLines: 1,
@@ -111,7 +128,9 @@ class _PatientListScreenState extends State<PatientListScreen> {
                                   text: 'Age: ',
                                   style: secondaryTextStyle(),
                                   children: <TextSpan>[
-                                    TextSpan(text: patientData.age, style: boldTextStyle()),
+                                    TextSpan(
+                                        text: patientData.age,
+                                        style: boldTextStyle()),
                                   ],
                                 ),
                               ),
@@ -119,14 +138,23 @@ class _PatientListScreenState extends State<PatientListScreen> {
                             ],
                           ),
                         ).onTap(() {
-                          PatientDetailScreen(userData: patientData).launch(context);
+                          PatientDetailScreen(userData: patientData)
+                              .launch(context)
+                              .then((value) async {
+                            if (value != null && value) {
+                              await 1.seconds.delay;
+                              init();
+                              setState(() {});
+                            }
+                          });
                         });
                       },
                     ).expand(),
                   ],
                 );
+              } else {
+                return noDataWidget();
               }
-              if (snap.data != []) noDataWidget();
             }
             return snapWidgetHelper(snap, loadingWidget: Loader());
           },
